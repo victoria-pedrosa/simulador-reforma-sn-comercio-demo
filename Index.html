@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reforma SN 2027 - Comercio</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,300;0,6..12,400;0,6..12,600;0,6..12,700;0,6..12,800&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<style>
+
+:root{
+  --ground:#F2F6F3; --surface:#FFFFFF; --surface-2:#EDF3EF; --line:#DFE8E2; --line-strong:#C6D3CB;
+  --ink:#1B2521; --ink-2:#55635C; --ink-3:#8A968F;
+  --brand:#015A46; --brand-2:#00806195; --brand-deep:#002B22; --brand-soft:#E0F2EA;
+  --mint:#00E0A0; --mint-2:#00C08B; --on-mint:#003024;
+  --good:#00805F; --bad:#D12A3C; --warn-bg:#FFF6E2; --warn-ink:#8A5A00; --warn-line:#F0DCA8;
+  --s1:#1E8C73; --s2:#E4572E; --s3:#00C08B; --s4:#EDA100; --s5:#B160C9;
+  --shadow:0 1px 2px rgba(0,43,34,.05),0 10px 30px rgba(0,43,34,.06);
+  --hero:linear-gradient(115deg,#015A46 0%,#00735A 45%,#013B2F 100%);
+  --paper:#FFFFFF; --paper-ink:#1B2521;
+  --r:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0A1712; --surface:#10211B; --surface-2:#173026; --line:#22392F; --line-strong:#2F4C3E;
+    --ink:#E8F1EC; --ink-2:#AEC0B7; --ink-3:#83958B;
+    --brand:#37C79E; --brand-2:#2AA383; --brand-deep:#BDF0DD; --brand-soft:#123329;
+    --mint:#00E0A0; --mint-2:#00C08B; --on-mint:#003024;
+    --good:#2FC79B; --bad:#F0705F; --warn-bg:#2E2513; --warn-ink:#E8CA86; --warn-line:#4D4223;
+    --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+    --hero:linear-gradient(115deg,#013B2F 0%,#01553F 50%,#002119 100%);
+    --paper:#F6FAF7; --paper-ink:#16201B;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0A1712; --surface:#10211B; --surface-2:#173026; --line:#22392F; --line-strong:#2F4C3E;
+  --ink:#E8F1EC; --ink-2:#AEC0B7; --ink-3:#83958B;
+  --brand:#37C79E; --brand-2:#2AA383; --brand-deep:#BDF0DD; --brand-soft:#123329;
+  --mint:#00E0A0; --mint-2:#00C08B; --on-mint:#003024;
+  --good:#2FC79B; --bad:#F0705F; --warn-bg:#2E2513; --warn-ink:#E8CA86; --warn-line:#4D4223;
+  --shadow:0 1px 2px rgba(0,0,0,.45),0 10px 30px rgba(0,0,0,.35);
+  --hero:linear-gradient(115deg,#013B2F 0%,#01553F 50%,#002119 100%);
+  --paper:#F6FAF7; --paper-ink:#16201B;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:"Nunito Sans","Segoe UI",Avenir,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.55;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:1240px;margin:0 auto;padding:0 16px;padding-block:18px 56px}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:800;letter-spacing:-.015em}
+.mono,td.n,.num,.tnum{font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1}
+.eyebrow{font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+a{color:var(--brand)}
+
+/* ---- faixa verde do topo, como o site ---- */
+header.top{background:var(--hero);border-radius:18px;padding:20px 24px;color:#fff;margin-bottom:16px;
+  display:flex;flex-wrap:wrap;gap:14px 20px;align-items:center;justify-content:space-between}
+header.top h1{font-size:25px;line-height:1.15;color:#fff}
+header.top .tag{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--mint);display:block;margin-bottom:4px}
+.src{display:flex;align-items:center;gap:10px;font-size:12.5px;color:rgba(255,255,255,.88);flex-wrap:wrap}
+.dot{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.5);flex:0 0 auto}
+.dot.on{background:var(--mint)} .dot.off{background:#FF8C7A} .dot.load{background:#FFD36E}
+header.top button{border-radius:999px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.08);
+  color:#fff;padding:7px 15px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit}
+header.top button:hover{background:var(--mint);border-color:var(--mint);color:var(--on-mint)}
+
+nav.tabs{display:flex;gap:6px;margin-bottom:20px;overflow-x:auto;padding-bottom:2px}
+nav.tabs button{border:1px solid var(--line);background:var(--surface);padding:9px 18px;font-family:inherit;font-size:14px;
+  font-weight:600;color:var(--ink-2);cursor:pointer;border-radius:999px;white-space:nowrap}
+nav.tabs button[aria-selected="true"]{background:var(--brand);border-color:var(--brand);color:#fff}
+nav.tabs button:hover:not([aria-selected="true"]){border-color:var(--brand);color:var(--brand)}
+
+.grid{display:grid;grid-template-columns:minmax(0,360px) minmax(0,1fr);gap:20px;align-items:start}
+@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.stack{display:flex;flex-direction:column;gap:20px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden}
+.panel > .phead{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:13px 18px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.phead h2{font-size:12px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-2);font-weight:700}
+.pbody{padding:18px}
+.field{margin-bottom:13px}
+label{display:block;font-size:13px;font-weight:600;color:var(--ink-2);margin-bottom:5px}
+label .hint{font-weight:400;color:var(--ink-3)}
+input,select,textarea{width:100%;padding:10px 12px;border:1px solid var(--line-strong);border-radius:10px;background:var(--surface);
+  color:var(--ink);font-family:inherit;font-size:14px;font-variant-numeric:tabular-nums}
+textarea{font-size:12.5px;line-height:1.45;min-height:120px}
+input:focus-visible,select:focus-visible,button:focus-visible,textarea:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.searchbox{position:relative}
+.results{position:absolute;z-index:30;top:calc(100% + 4px);left:0;right:0;max-height:280px;overflow-y:auto;
+  background:var(--surface);border:1px solid var(--line-strong);border-radius:12px;box-shadow:var(--shadow)}
+.results button{display:block;width:100%;text-align:left;border:0;background:none;padding:9px 12px;cursor:pointer;
+  color:var(--ink);font-size:13px;border-bottom:1px solid var(--line);font-family:inherit}
+.results button:hover,.results button:focus{background:var(--brand-soft)}
+.results .c{font-size:12.5px;color:var(--brand);font-weight:700;font-variant-numeric:tabular-nums}
+.picked{margin-top:8px;background:var(--surface-2);border-radius:10px;padding:11px 13px;font-size:13px;color:var(--ink-2)}
+.picked strong{color:var(--ink)}
+details.adv{border-top:1px solid var(--line);margin-top:6px;padding-top:12px}
+details.adv summary{cursor:pointer;font-size:13px;color:var(--brand);font-weight:700;list-style:none}
+details.adv summary::-webkit-details-marker{display:none}
+details.adv summary::before{content:"+ "}
+details.adv[open] summary::before{content:"− "}
+.check{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--ink-2);margin-bottom:10px}
+.check input{width:16px;height:16px;flex:0 0 auto;margin-top:3px;accent-color:var(--brand)}
+button.act{background:var(--mint);color:var(--on-mint);border:0;border-radius:999px;padding:10px 20px;font-size:13.5px;
+  font-weight:700;cursor:pointer;font-family:inherit}
+button.act:hover{background:var(--mint-2)}
+button.act[disabled]{opacity:.5;cursor:not-allowed}
+button.ghost{background:none;border:1px solid var(--line-strong);color:var(--ink-2);border-radius:999px;padding:8px 15px;
+  font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit}
+button.ghost:hover{border-color:var(--brand);color:var(--brand)}
+.btnrow{display:flex;flex-wrap:wrap;gap:8px}
+
+.verdict{padding:18px;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:18px 30px;align-items:flex-end}
+.verdict .big{font-size:33px;font-weight:800;line-height:1;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.verdict .big.up{color:var(--bad)} .verdict .big.down{color:var(--good)}
+.verdict .sub{font-size:12.5px;color:var(--ink-2);margin-top:6px}
+.vitem{min-width:150px}
+.scen{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line)}
+@media(max-width:560px){.scen{grid-template-columns:1fr}}
+.scen > div{background:var(--surface);padding:16px 18px}
+.scen h3{font-size:11.5px;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+.scen .val{font-size:25px;font-weight:800;margin-top:8px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.scen .pct{font-size:13px;color:var(--ink-2);margin-top:2px;font-variant-numeric:tabular-nums}
+.chart{padding:18px}
+.bar{margin-bottom:15px}
+.bar .lab{display:flex;justify-content:space-between;font-size:13px;color:var(--ink-2);margin-bottom:6px;gap:10px;font-weight:600}
+.bar .lab b{color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums;font-weight:700}
+.track{display:flex;height:30px;border-radius:8px;overflow:hidden;background:var(--surface-2)}
+.seg{height:100%;border-right:2px solid var(--surface)}
+.seg:last-child{border-right:0}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:12.5px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.swatch{width:11px;height:11px;border-radius:3px;flex:0 0 auto}
+
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+.tablewrap{overflow-x:auto}
+th,td{text-align:left;padding:9px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);font-weight:700;white-space:nowrap}
+th.sortable{cursor:pointer;user-select:none}
+th.sortable:hover{color:var(--brand)}
+td.n{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+tr.total td{font-weight:700;background:var(--surface-2)}
+tr.group td{background:var(--surface-2);font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3);font-weight:700}
+#tblLote td:first-child,#tblLote th:first-child{min-width:210px}
+tbody tr.pick{cursor:pointer}
+tbody tr.pick:hover{background:var(--brand-soft)}
+.pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}
+.pill.up{background:rgba(209,42,60,.1);color:var(--bad)}
+.pill.down{background:rgba(0,128,95,.12);color:var(--good)}
+.note{font-size:12.5px;color:var(--ink-3);padding:13px 18px;border-top:1px solid var(--line);line-height:1.6}
+.alert{display:flex;gap:10px;background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--warn-ink);
+  border-radius:11px;padding:11px 14px;font-size:12.5px;margin:0 18px 14px}
+.alert b{display:block;margin-bottom:2px}
+.alert.err{background:rgba(209,42,60,.08);border-color:rgba(209,42,60,.3);color:var(--bad)}
+.empty{padding:36px 18px;text-align:center;color:var(--ink-3);font-size:13.5px}
+.kpis{display:flex;flex-wrap:wrap;gap:16px 34px;padding:16px 18px;border-bottom:1px solid var(--line)}
+.kpi .v{font-size:21px;font-weight:800;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.filters{display:flex;flex-wrap:wrap;gap:8px;padding:13px 18px;border-bottom:1px solid var(--line);align-items:center}
+.filters input,.filters select{width:auto;min-width:130px;flex:0 1 200px;padding:8px 12px;font-size:13px;border-radius:999px}
+
+.paper{background:var(--paper);color:var(--paper-ink);border:1px solid var(--line);border-radius:10px;
+  padding:36px 40px;max-width:720px;margin:0 auto;font-size:14px;line-height:1.7;font-weight:400}
+.paper h4{font-size:15.5px;margin:0 0 3px;text-align:center;letter-spacing:.01em;font-weight:800}
+.paper .hd{text-align:center;margin-bottom:24px}
+.paper p{margin:0 0 13px}
+.paper ul{margin:0 0 13px;padding-left:20px}
+.paper li{margin-bottom:7px}
+.paper .meta{margin-bottom:18px}
+@media(max-width:640px){.paper{padding:22px 18px}}
+@media print{
+  body{background:#fff}
+  .noprint{display:none!important}
+  .paper{border:0;box-shadow:none;max-width:none;padding:0}
+}
+footer{margin-top:26px;font-size:12px;color:var(--ink-3);border-top:1px solid var(--line);padding-top:14px;line-height:1.7}
+#tblLeitura td{padding:11px 18px}
+#tblLeitura td:first-child{width:38%;color:var(--ink-2);font-weight:600}
+#tblLeitura td:last-child{font-weight:700;font-variant-numeric:tabular-nums}
+#tblLeitura td small{display:block;font-weight:400;color:var(--ink-3);font-size:12px;margin-top:2px;font-variant-numeric:normal}
+#interpretacao p{margin:0 0 11px;line-height:1.65}
+#interpretacao p:last-child{margin-bottom:0}
+#interpretacao b{font-weight:700}
+#interpretacao .ress{font-size:12.5px;color:var(--ink-2);background:var(--surface-2);border-radius:10px;padding:11px 14px}
+
+#iaAviso,#gravou{display:block}
+.phead .btnrow{align-items:center}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="top">
+  <div>
+    <span class="tag">Exemplo · Time de IA</span>
+    <h1>Reforma SN 2027 — Comércio</h1>
+  </div>
+  <div class="src">
+    <span class="dot" id="srcDot"></span>
+    <span id="srcTxt">Nenhum arquivo carregado</span>
+  </div>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button role="tab" id="tab-empresa" aria-selected="true">Empresa</button>
+  <button role="tab" id="tab-produtos" aria-selected="false">Produtos</button>
+  <button role="tab" id="tab-manual" aria-selected="false">Simulador manual</button>
+</nav>
+
+<!-- ============ EMPRESA ============ -->
+<div id="pane-empresa">
+ <div class="grid">
+  <section class="panel">
+    <div class="phead"><h2>Arquivos do mês</h2><span class="eyebrow" id="tagFaixa"></span></div>
+    <div class="pbody">
+      <div class="field" hidden>
+        <label for="eEmpresa">Empresa <span class="hint">— da aba EMPRESAS</span></label>
+        <select id="eEmpresa"></select>
+      </div>
+      <p class="hint" id="avisoCadastro" hidden style="margin-top:0">Nenhuma empresa na aba EMPRESAS. Dá para usar assim mesmo — o nome vem do extrato.</p>
+      <div class="field">
+        <label for="fMov">Movimentação fiscal <span class="hint">— entradas e saídas, CSV do Domínio</span></label>
+        <input id="fMov" type="file" accept=".csv,.txt">
+      </div>
+      <div class="field">
+        <label for="fExt">Extrato do PGDAS-D <span class="hint">— PDF, para ler RBT12 e a partilha</span></label>
+        <input id="fExt" type="file" accept=".pdf">
+      </div>
+      <div class="field">
+        <label for="fXml">XMLs de entrada <span class="hint">— ZIP do cofre, ou vários .xml</span></label>
+        <input id="fXml" type="file" accept=".zip,.xml" multiple>
+      </div>
+      <div class="picked" id="picked">Carregue os arquivos do mesmo período. Sem o extrato, dá para digitar os valores abaixo.</div>
+      <details class="adv" id="boxForn" hidden>
+        <summary id="fornResumo">Fornecedores lidos</summary>
+        <div class="tablewrap" style="padding-top:10px"><table id="tblForn"><tbody></tbody></table></div>
+        <p class="hint" style="margin-top:8px">Regime lido da tag CRT do emitente em cada nota: 1 e 2 são Simples Nacional, 3 é regime normal, 4 é MEI. Só o fornecedor no regime normal gera crédito de CBS.</p>
+      </details>
+
+      <div class="row2" style="margin-top:12px">
+        <div class="field"><label for="eFat">Faturamento do mês</label><input id="eFat" type="text" inputmode="decimal" value="28.200,00"></div>
+        <div class="field"><label for="eRbt">RBT12 da efetiva <span class="hint">(proporcionalizada)</span></label><input id="eRbt" type="text" inputmode="decimal" value="259.234,29"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label for="eCompras">Compras do mês <span class="hint">(entradas)</span></label><input id="eCompras" type="text" inputmode="decimal" value="0,00"></div>
+        <div class="field"><label for="eReg">Compras de fornecedor no regime regular <span class="hint">(%)</span></label><input id="eReg" type="text" inputmode="decimal" value="70,00"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label for="eAnexo">Anexo</label>
+          <select id="eAnexo"><option value="I">I — Comércio</option><option value="II">II — Indústria</option></select></div>
+        <div class="field"><label for="eCbs">CBS 2027 <span class="hint">(%)</span></label><input id="eCbs" type="text" inputmode="decimal" value="8,80"></div>
+      </div>
+
+      <details class="adv">
+        <summary>Parâmetros e ajustes</summary>
+        <div style="padding-top:12px">
+          <div class="row2">
+            <div class="field"><label for="ePis">PIS do extrato <span class="hint">(R$)</span></label><input id="ePis" type="text" inputmode="decimal" value="38,98"></div>
+            <div class="field"><label for="eCof">COFINS do extrato <span class="hint">(R$)</span></label><input id="eCof" type="text" inputmode="decimal" value="179,94"></div>
+          </div>
+          <div class="check"><input type="checkbox" id="eUsaExtrato" checked><label for="eUsaExtrato" style="margin:0">Usar PIS/COFINS lidos do extrato <span class="hint">(desmarcado: pela tabela de partilha)</span></label></div>
+          <div class="row2">
+            <div class="field"><label for="eIbs">IBS teste <span class="hint">(%)</span></label><input id="eIbs" type="text" inputmode="decimal" value="0,10"></div>
+            <div class="field"><label for="eRedEnt">Redução média das compras <span class="hint">(%, se não houver arquivo)</span></label><input id="eRedEnt" type="text" inputmode="decimal" value="0,00"></div>
+          </div>
+          <div class="check"><input type="checkbox" id="eIncIbs"><label for="eIncIbs" style="margin:0">Somar o IBS de teste (0,1%) ao cenário híbrido</label></div>
+          <div class="check"><input type="checkbox" id="eDuvida"><label for="eDuvida" style="margin:0">Considerar redução nos produtos marcados como <b>conferir</b> <span class="hint">(padrão: não considera)</span></label></div>
+          <div class="check"><input type="checkbox" id="eAnvisa" checked><label for="eAnvisa" style="margin:0">Considerar as reduções que dependem de <b>regularização na Anvisa</b> <span class="hint">(art. 131, §1º)</span></label></div>
+          <div class="field"><label for="eRedSai">Redução média das saídas <span class="hint">(%, se não houver arquivo)</span></label><input id="eRedSai" type="text" inputmode="decimal" value="0,00"></div>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <div class="stack">
+    <section class="panel">
+      <div class="verdict">
+        <div class="vitem"><span class="eyebrow">Impacto no mês</span><div class="big" id="vMes">—</div><div class="sub" id="vMesSub"></div></div>
+        <div class="vitem"><span class="eyebrow">Impacto no ano</span><div class="big" id="vAno" style="font-size:25px">—</div><div class="sub">12 meses no mesmo movimento</div></div>
+        <div class="vitem"><span class="eyebrow">Variação da carga</span><div class="big" id="vPP" style="font-size:25px">—</div><div class="sub">pontos percentuais sobre a receita</div></div>
+        <div class="vitem"><span class="eyebrow">Recomendação</span><div style="font-size:15px;font-weight:600;margin-top:6px" id="vRec">—</div><div class="sub" id="vRecSub"></div></div>
+      </div>
+      <div id="alerts"></div>
+      <div class="scen">
+        <div><h3>Hoje — DAS integral</h3><div class="val" id="cAtual">—</div><div class="pct" id="pAtual"></div></div>
+        <div><h3>2027 — DAS híbrido + CBS</h3><div class="val" id="cHib">—</div><div class="pct" id="pHib"></div></div>
+      </div>
+      <div class="chart">
+        <span class="eyebrow">Composição da carga (% da receita do mês)</span>
+        <div style="height:10px"></div>
+        <div class="bar"><div class="lab"><span>Hoje</span><b id="lbAtual"></b></div><div class="track" id="trAtual"></div></div>
+        <div class="bar"><div class="lab"><span>2027 (híbrido)</span><b id="lbHib"></b></div><div class="track" id="trHib"></div></div>
+        <div class="legend" id="leg"></div>
+      </div>
+    </section>
+
+    <section class="panel" id="panLeitura">
+      <div class="phead"><h2>Leitura do mês</h2>
+        <div class="btnrow"><span class="eyebrow" id="tagLeitura"></span>
+          <button class="ghost" id="btnIA" disabled>Interpretar com a IA</button>
+          <button class="act" id="btnGravar">Gravar na planilha</button></div></div>
+      <div class="tablewrap"><table id="tblLeitura"><tbody></tbody></table></div>
+      <div class="alert" id="iaAviso" hidden style="margin:14px 18px 0"></div>
+      <div class="alert" id="gravou" hidden style="margin:14px 18px 0;background:var(--brand-soft);border-color:var(--brand);color:var(--brand)"></div>
+      <div class="pbody" id="interpretacao" style="padding-top:14px"></div>
+    </section>
+    <section class="panel">
+      <div class="phead"><h2>Memória de cálculo</h2>
+        <div class="btnrow"><span class="eyebrow" id="tagAnexo"></span><button class="ghost" id="btnCopy">Copiar para Sheets</button></div></div>
+      <div class="tablewrap"><table id="memo"><tbody></tbody></table></div>
+      <p class="note">Alíquota efetiva = (RBT12 × alíquota nominal − parcela a deduzir) ÷ RBT12 (art. 18, §1º-A da LC 123/2006). No cenário híbrido o PIS e a COFINS saem do DAS e entra a CBS por fora, com direito a crédito nas compras — a opção pelo regime regular está no art. 41, §3º da LC 214/2025. Em 2027 o IBS fica em 0,1% (art. 344) e a CBS é a alíquota de referência menos 0,1 p.p. (art. 347).</p>
+    </section>
+  </div>
+ </div>
+</div>
+
+<!-- ============ PRODUTOS ============ -->
+<div id="pane-produtos" hidden>
+  <section class="panel">
+    <div class="kpis" id="kpis"></div>
+    <div class="filters">
+      <input id="fBusca" type="text" placeholder="Buscar produto ou NCM">
+      <select id="fTipo"><option value="">Saídas e entradas</option><option value="S">Só saídas</option><option value="E">Só entradas</option></select>
+      <select id="fRed"><option value="">Todas as situações</option><option value="com">Só com redução</option><option value="sem">Só sem redução</option><option value="conf">Só a conferir</option><option value="inde">Só com vários itens</option><option value="anv">Só os que dependem da Anvisa</option></select>
+      <button class="ghost" id="btnCopyProd">Copiar tabela</button>
+    </div>
+    <div class="tablewrap"><table id="tblProd"><thead></thead><tbody></tbody></table></div>
+    <div class="empty" id="prodVazio">Carregue a movimentação fiscal para ver os produtos.</div>
+    <p class="note">Mesmo motor do Motor de Evidências: descida de prefixo na NCM (8 a 4 dígitos), teste duplo pela aderência da descrição ao texto do anexo, desempate pelo benefício mais forte e art. 133 para medicamentos das NCM 3003 e 3004. Aderência <b>baixa</b> ou NCM cobrindo <b>vários itens</b> não sustenta o enquadramento: o produto entra sem redução até alguém conferir. <b>Depende da Anvisa</b> marca os anexos que condicionam o benefício à regularização sanitária — Anexo IV (art. 131, §1º), XII, XIV e o art. 133.</p>
+  </section>
+</div>
+
+<!-- ============ MANUAL ============ -->
+<div id="pane-manual" hidden>
+ <div class="grid">
+  <section class="panel">
+    <div class="phead"><h2>Simulação sem arquivo</h2><span class="eyebrow" id="mTagFaixa"></span></div>
+    <div class="pbody">
+      <div class="row2">
+        <div class="field"><label for="mFat">Faturamento do mês</label><input id="mFat" type="text" inputmode="decimal" value="100.000,00"></div>
+        <div class="field"><label for="mRbt">RBT12</label><input id="mRbt" type="text" inputmode="decimal" value="1.200.000,00"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label for="mCompras">Compras do mês</label><input id="mCompras" type="text" inputmode="decimal" value="60.000,00"></div>
+        <div class="field"><label for="mReg">Compras de fornecedor no regime regular <span class="hint">(%)</span></label><input id="mReg" type="text" inputmode="decimal" value="70,00"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label for="mRedSai">Receita com redução <span class="hint">(% do faturamento)</span></label><input id="mRedSai" type="text" inputmode="decimal" value="0,00"></div>
+        <div class="field"><label for="mRedEnt">Compras com redução <span class="hint">(% das compras)</span></label><input id="mRedEnt" type="text" inputmode="decimal" value="0,00"></div>
+      </div>
+      <div class="row2">
+        <div class="field"><label for="mAnexo">Anexo</label>
+          <select id="mAnexo"><option value="I">I — Comércio</option><option value="II">II — Indústria</option></select></div>
+        <div class="field"><label for="mGrau">Redução dos produtos beneficiados <span class="hint">(%)</span></label>
+          <select id="mGrau"><option value="0.6">60% — redução</option><option value="1">100% — alíquota zero</option></select></div>
+      </div>
+      <details class="adv">
+        <summary>Parâmetros</summary>
+        <div style="padding-top:12px">
+          <div class="row2">
+            <div class="field"><label for="mCbs">CBS 2027 <span class="hint">(%)</span></label><input id="mCbs" type="text" inputmode="decimal" value="8,80"></div>
+            <div class="field"><label for="mIbs">IBS teste <span class="hint">(%)</span></label><input id="mIbs" type="text" inputmode="decimal" value="0,10"></div>
+          </div>
+          <div class="check"><input type="checkbox" id="mIncIbs"><label for="mIncIbs" style="margin:0">Somar o IBS de teste ao cenário híbrido</label></div>
+        </div>
+      </details>
+    </div>
+  </section>
+  <div class="stack">
+    <section class="panel">
+      <div class="verdict">
+        <div class="vitem"><span class="eyebrow">Impacto no mês</span><div class="big" id="mMes">—</div><div class="sub" id="mMesSub"></div></div>
+        <div class="vitem"><span class="eyebrow">Impacto no ano</span><div class="big" id="mAno" style="font-size:25px">—</div><div class="sub">12 meses no mesmo movimento</div></div>
+        <div class="vitem"><span class="eyebrow">Variação da carga</span><div class="big" id="mPP" style="font-size:25px">—</div><div class="sub">pontos percentuais</div></div>
+      </div>
+      <div id="mAlerts"></div>
+      <div class="scen">
+        <div><h3>Hoje — DAS integral</h3><div class="val" id="mcAtual">—</div><div class="pct" id="mpAtual"></div></div>
+        <div><h3>2027 — DAS híbrido + CBS</h3><div class="val" id="mcHib">—</div><div class="pct" id="mpHib"></div></div>
+      </div>
+      <div class="chart">
+        <span class="eyebrow">Composição da carga (% da receita do mês)</span><div style="height:10px"></div>
+        <div class="bar"><div class="lab"><span>Hoje</span><b id="mlbAtual"></b></div><div class="track" id="mtrAtual"></div></div>
+        <div class="bar"><div class="lab"><span>2027 (híbrido)</span><b id="mlbHib"></b></div><div class="track" id="mtrHib"></div></div>
+        <div class="legend" id="mleg"></div>
+      </div>
+    </section>
+    <section class="panel">
+      <div class="phead"><h2>Memória de cálculo</h2><span class="eyebrow" id="mTagAnexo"></span></div>
+      <div class="tablewrap"><table id="mMemo"><tbody></tbody></table></div>
+    </section>
+  </div>
+ </div>
+</div>
+
+<footer>
+  Apoio à análise fiscal — não substitui a apuração no PGDAS-D. O crédito das compras depende de o fornecedor estar no regime regular: o percentual informado é premissa do estudo, não dado do arquivo. Reduções por produto pelo cruzamento NCM × descrição com os anexos da LC 214/2025.<br>
+  Escritório Contábil Exemplo · Time de IA · as consultas ficam registradas na aba SIMULACOES
+</footer>
+</div>
+
+<script>
+var HIP=["Alimentacao humana - aliquota zero (art. 125)","Dispositivos medicos regularizados na Anvisa (art. 131)","Dispositivos de acessibilidade - reducao de 60% (art. 132)","Nutricao enteral/parenteral - reducao de 60% (art. 133)","Alimentos - reducao de 60% (art. 135)","Higiene pessoal e limpeza - reducao de 60% (art. 136)","Insumos agropecuarios e aquicolas - reducao de 60% (art. 138)","Bens e servicos com reducao de 60%","Fornecimento a administracao publica","Dispositivos medicos - aliquota zero (art. 144)","Dispositivos de acessibilidade - aliquota zero (art. 144)","Medicamentos - aliquota zero (art. 144)","Horticolas, frutas e ovos - aliquota zero (art. 145)"];
+var LC214={"100620":[["1","I",1.0,"Arroz das subposições 1006.20 e 1006.30 e do código 1006.40.00 da NCM/SH",0,0]],"100630":[["1","I",1.0,"Arroz das subposições 1006.20 e 1006.30 e do código 1006.40.00 da NCM/SH",0,0]],"10064000":[["1","I",1.0,"Arroz das subposições 1006.20 e 1006.30 e do código 1006.40.00 da NCM/SH",0,0]],"04011010":[["2","I",1.0,"Leite, em conformidade com os requisitos da legislação específica relativos ao consumo direto pela população, ",0,0]],"04011090":[["2","I",1.0,"Leite, em conformidade com os requisitos da legislação específica relativos ao consumo direto pela população, ",0,0]],"04012010":[["2","I",1.0,"Leite, em conformidade com os requisitos da legislação específica relativos ao consumo direto pela população, ",0,0]],"04012090":[["2","I",1.0,"Leite, em conformidade com os requisitos da legislação específica relativos ao consumo direto pela população, ",0,0]],"04014010":[["2","I",1.0,"Leite, em conformidade com os requisitos da legislação específica relativos ao consumo direto pela população, ",0,0]],"04015010":[["2","I",1.0,"Leite, em conformidade com os requisitos da legislação específica relativos ao consumo direto pela população, ",0,0]],"04021010":[["3","I",1.0,"Leite em pó, em conformidade com os requisitos da legislação específica, classificado nos códigos 0402.10.10, ",0,0]],"04021090":[["3","I",1.0,"Leite em pó, em conformidade com os requisitos da legislação específica, classificado nos códigos 0402.10.10, ",0,0]],"04022110":[["3","I",1.0,"Leite em pó, em conformidade com os requisitos da legislação específica, classificado nos códigos 0402.10.10, ",0,0]],"04022120":[["3","I",1.0,"Leite em pó, em conformidade com os requisitos da legislação específica, classificado nos códigos 0402.10.10, ",0,0]],"04022910":[["3","I",1.0,"Leite em pó, em conformidade com os requisitos da legislação específica, classificado nos códigos 0402.10.10, ",0,0]],"04022920":[["3","I",1.0,"Leite em pó, em conformidade com os requisitos da legislação específica, classificado nos códigos 0402.10.10, ",0,0]],"19011010":[["4","I",1.0,"Fórmulas infantis, em conformidade com os requisitos da legislação específica, classificadas nos códigos 1901.",0,0]],"19011090":[["4","I",1.0,"Fórmulas infantis, em conformidade com os requisitos da legislação específica, classificadas nos códigos 1901.",0,0]],"21069090":[["4","I",1.0,"Fórmulas infantis, em conformidade com os requisitos da legislação específica, classificadas nos códigos 1901.",0,0],["39","VI",0.6,"Fórmula para dieta isenta de fenilalanina",1,3],["40","VI",0.6,"Fórmula para dieta isenta demetionina",1,3],["41","VI",0.6,"Fórmula para dieta isenta de lisina e pobre de triptofano",1,3],["42","VI",0.6,"Fórmula para dieta isenta de leucina, de isoleucina ou de valina",1,3],["43","VI",0.6,"Fórmula para dieta isenta de fenilalanina e de metionina",1,3],["44","VI",0.6,"Fórmula para dieta isenta de aminoácidos não essenciais",1,3],["45","VI",0.6,"Fórmula para dieta isenta de metionina, de treonina, de valina e restrita de isoleucina",1,3],["46","VI",0.6,"Fórmula para dieta cetogênica, na proporção de 4 g de gordura para cada 1 g de carboidratos e proteínas",1,3]],"04051000":[["5","I",1.0,"Manteiga do código 0405.10.00 da NCM/SH",0,0]],"15171000":[["6","I",1.0,"Margarina do código 1517.10.00 da NCM/SH",0,0]],"07133319":[["7","I",1.0,"Feijões dos códigos 0713.33.19, 0713.33.29, 0713.33.99 e 0713.35.90 da NCM/SH",0,0]],"07133329":[["7","I",1.0,"Feijões dos códigos 0713.33.19, 0713.33.29, 0713.33.99 e 0713.35.90 da NCM/SH",0,0]],"07133399":[["7","I",1.0,"Feijões dos códigos 0713.33.19, 0713.33.29, 0713.33.99 e 0713.35.90 da NCM/SH",0,0]],"07133590":[["7","I",1.0,"Feijões dos códigos 0713.33.19, 0713.33.29, 0713.33.99 e 0713.35.90 da NCM/SH",0,0]],"0901":[["8","I",1.0,"Café da posição 09.01 e da subposição 2101.1, ambos da NCM/SH",0,0]],"21011":[["8","I",1.0,"Café da posição 09.01 e da subposição 2101.1, ambos da NCM/SH",0,0]],"15132120":[["9","I",1.0,"Óleo de babaçu do código 1513.21.20 da NCM/SH, em conformidade com os requisitos da legislação específica rela",0,0]],"11062000":[["10","I",1.0,"Farinha de mandioca classificada no código 1106.20.00 da NCM/SH e tapioca e seus sucedâneos do código 1903.00.",0,0]],"19030000":[["10","I",1.0,"Farinha de mandioca classificada no código 1106.20.00 da NCM/SH e tapioca e seus sucedâneos do código 1903.00.",0,0]],"11022000":[["11","I",1.0,"Farinha, grumos e sêmolas, de milho, dos códigos 1102.20.00 e 1103.13.00 da NCM",0,0]],"11031300":[["11","I",1.0,"Farinha, grumos e sêmolas, de milho, dos códigos 1102.20.00 e 1103.13.00 da NCM",0,0]],"11041900":[["12","I",1.0,"Grãos de milho classificados no código 1104.19.00 e do código 1104.23.00 da NCM/SH",0,0]],"11042300":[["12","I",1.0,"Grãos de milho classificados no código 1104.19.00 e do código 1104.23.00 da NCM/SH",0,0]],"11010010":[["13","I",1.0,"Farinha de trigo do código 1101.00.10 da NCM/SH",0,0]],"17011400":[["14","I",1.0,"Açúcar classificado nos códigos 1701.14.00 e 1701.99.00 da NCM/SH",0,0]],"17019900":[["14","I",1.0,"Açúcar classificado nos códigos 1701.14.00 e 1701.99.00 da NCM/SH",0,0]],"19021":[["15","I",1.0,"Massas alimentícias da subposição 1902.1 da NCM/SH",0,0]],"19059090":[["16","I",1.0,"Pão comumente denominado pão francês, de formato cilíndrico e alongado, com miolo branco creme e macio, e casc",0,0]],"19012010":[["16","I",1.0,"Pão comumente denominado pão francês, de formato cilíndrico e alongado, com miolo branco creme e macio, e casc",0,0]],"19012090":[["16","I",1.0,"Pão comumente denominado pão francês, de formato cilíndrico e alongado, com miolo branco creme e macio, e casc",0,0]],"11041200":[["17","I",1.0,"Grãos de aveia dos códigos 1104.12.00 e 1104.22.00 da NCM/SH",0,0]],"11042200":[["17","I",1.0,"Grãos de aveia dos códigos 1104.12.00 e 1104.22.00 da NCM/SH",0,0]],"11029000":[["18","I",1.0,"Farinha de aveia classificada no código 1102.90.00 da NCM/SH",0,0]],"0201":[["19","I",1.0,"Carnes bovina, suína, ovina, caprina e de aves e produtos de origem animal (excetofoies gras ) dos seguintes c",0,0]],"0202":[["19","I",1.0,"Carnes bovina, suína, ovina, caprina e de aves e produtos de origem animal (excetofoies gras ) dos seguintes c",0,0]],"02061000":[["19","I",1.0,"Carnes bovina, suína, ovina, caprina e de aves e produtos de origem animal (excetofoies gras ) dos seguintes c",0,0]],"02062":[["19","I",1.0,"Carnes bovina, suína, ovina, caprina e de aves e produtos de origem animal (excetofoies gras ) dos seguintes c",0,0]],"02102000":[["19","I",1.0,"Carnes bovina, suína, ovina, caprina e de aves e produtos de origem animal (excetofoies gras ) dos seguintes c",0,0]],"0203":[["19","I",1.0,"Carnes bovina, suína, ovina, caprina e de aves e produtos de origem animal (excetofoies gras ) dos seguintes c",0,0]],"02063000":[["19","I",1.0,"Carnes bovina, suína, ovina, caprina e de aves e produtos de origem animal (excetofoies gras ) dos seguintes c",0,0]],"02064":[["19","I",1.0,"Carnes bovina, suína, ovina, caprina e de aves e produtos de origem animal (excetofoies gras ) dos seguintes c",0,0]],"020910":[["19","I",1.0,"Carnes bovina, suína, ovina, caprina e de aves e produtos de origem animal (excetofoies gras ) dos seguintes c",0,0]],"02101":[["19","I",1.0,"Carnes bovina, suína, ovina, caprina e de aves e produtos de origem animal (excetofoies gras ) dos seguintes c",0,0]],"0204":[["19","I",1.0,"Carnes bovina, suína, ovina, caprina e de aves e produtos de origem animal (excetofoies gras ) dos seguintes c",0,0]],"02109920":[["19","I",1.0,"Carnes bovina, suína, ovina, caprina e de aves e produtos de origem animal (excetofoies gras ) dos seguintes c",0,0]],"02109990":[["19","I",1.0,"Carnes bovina, suína, ovina, caprina e de aves e produtos de origem animal (excetofoies gras ) dos seguintes c",0,0]],"02068000":[["19","I",1.0,"Carnes bovina, suína, ovina, caprina e de aves e produtos de origem animal (excetofoies gras ) dos seguintes c",0,0]],"02069000":[["19","I",1.0,"Carnes bovina, suína, ovina, caprina e de aves e produtos de origem animal (excetofoies gras ) dos seguintes c",0,0]],"0207":[["19","I",1.0,"Carnes bovina, suína, ovina, caprina e de aves e produtos de origem animal (excetofoies gras ) dos seguintes c",0,0]],"02099000":[["19","I",1.0,"Carnes bovina, suína, ovina, caprina e de aves e produtos de origem animal (excetofoies gras ) dos seguintes c",0,0]],"0210991":[["19","I",1.0,"Carnes bovina, suína, ovina, caprina e de aves e produtos de origem animal (excetofoies gras ) dos seguintes c",0,0]],"02074300":[["19","I",1.0,"Carnes bovina, suína, ovina, caprina e de aves e produtos de origem animal (excetofoies gras ) dos seguintes c",0,0]],"02075300":[["19","I",1.0,"Carnes bovina, suína, ovina, caprina e de aves e produtos de origem animal (excetofoies gras ) dos seguintes c",0,0]],"0302":[["20","I",1.0,"Peixes e carnes de peixes (exceto salmonídeos, atuns, bacalhaus, hadoque, saithe e ovas e outros subprodutos) ",0,0]],"03021":[["20","I",1.0,"Peixes e carnes de peixes (exceto salmonídeos, atuns, bacalhaus, hadoque, saithe e ovas e outros subprodutos) ",0,0]],"03023":[["20","I",1.0,"Peixes e carnes de peixes (exceto salmonídeos, atuns, bacalhaus, hadoque, saithe e ovas e outros subprodutos) ",0,0]],"03025100":[["20","I",1.0,"Peixes e carnes de peixes (exceto salmonídeos, atuns, bacalhaus, hadoque, saithe e ovas e outros subprodutos) ",0,0]],"03025200":[["20","I",1.0,"Peixes e carnes de peixes (exceto salmonídeos, atuns, bacalhaus, hadoque, saithe e ovas e outros subprodutos) ",0,0]],"03025300":[["20","I",1.0,"Peixes e carnes de peixes (exceto salmonídeos, atuns, bacalhaus, hadoque, saithe e ovas e outros subprodutos) ",0,0]],"03029":[["20","I",1.0,"Peixes e carnes de peixes (exceto salmonídeos, atuns, bacalhaus, hadoque, saithe e ovas e outros subprodutos) ",0,0]],"0303":[["20","I",1.0,"Peixes e carnes de peixes (exceto salmonídeos, atuns, bacalhaus, hadoque, saithe e ovas e outros subprodutos) ",0,0]],"03031":[["20","I",1.0,"Peixes e carnes de peixes (exceto salmonídeos, atuns, bacalhaus, hadoque, saithe e ovas e outros subprodutos) ",0,0]],"03034":[["20","I",1.0,"Peixes e carnes de peixes (exceto salmonídeos, atuns, bacalhaus, hadoque, saithe e ovas e outros subprodutos) ",0,0]],"03036300":[["20","I",1.0,"Peixes e carnes de peixes (exceto salmonídeos, atuns, bacalhaus, hadoque, saithe e ovas e outros subprodutos) ",0,0]],"03036400":[["20","I",1.0,"Peixes e carnes de peixes (exceto salmonídeos, atuns, bacalhaus, hadoque, saithe e ovas e outros subprodutos) ",0,0]],"03036500":[["20","I",1.0,"Peixes e carnes de peixes (exceto salmonídeos, atuns, bacalhaus, hadoque, saithe e ovas e outros subprodutos) ",0,0]],"03039":[["20","I",1.0,"Peixes e carnes de peixes (exceto salmonídeos, atuns, bacalhaus, hadoque, saithe e ovas e outros subprodutos) ",0,0]],"0304":[["20","I",1.0,"Peixes e carnes de peixes (exceto salmonídeos, atuns, bacalhaus, hadoque, saithe e ovas e outros subprodutos) ",0,0]],"03044":[["20","I",1.0,"Peixes e carnes de peixes (exceto salmonídeos, atuns, bacalhaus, hadoque, saithe e ovas e outros subprodutos) ",0,0]],"03045":[["20","I",1.0,"Peixes e carnes de peixes (exceto salmonídeos, atuns, bacalhaus, hadoque, saithe e ovas e outros subprodutos) ",0,0]],"03047":[["20","I",1.0,"Peixes e carnes de peixes (exceto salmonídeos, atuns, bacalhaus, hadoque, saithe e ovas e outros subprodutos) ",0,0]],"03048":[["20","I",1.0,"Peixes e carnes de peixes (exceto salmonídeos, atuns, bacalhaus, hadoque, saithe e ovas e outros subprodutos) ",0,0]],"03049":[["20","I",1.0,"Peixes e carnes de peixes (exceto salmonídeos, atuns, bacalhaus, hadoque, saithe e ovas e outros subprodutos) ",0,0]],"04061010":[["21","I",1.0,"Queijos tipo mozarela, minas, prato, queijo de coalho, ricota, requeijão, queijo provolone, queijo parmesão, q",0,0]],"04061090":[["21","I",1.0,"Queijos tipo mozarela, minas, prato, queijo de coalho, ricota, requeijão, queijo provolone, queijo parmesão, q",0,0]],"04062000":[["21","I",1.0,"Queijos tipo mozarela, minas, prato, queijo de coalho, ricota, requeijão, queijo provolone, queijo parmesão, q",0,0]],"04069010":[["21","I",1.0,"Queijos tipo mozarela, minas, prato, queijo de coalho, ricota, requeijão, queijo provolone, queijo parmesão, q",0,0]],"04069020":[["21","I",1.0,"Queijos tipo mozarela, minas, prato, queijo de coalho, ricota, requeijão, queijo provolone, queijo parmesão, q",0,0]],"04069030":[["21","I",1.0,"Queijos tipo mozarela, minas, prato, queijo de coalho, ricota, requeijão, queijo provolone, queijo parmesão, q",0,0]],"25010020":[["22","I",1.0,"Sal em conformidade com os requisitos da legislação específica relativos ao teor de iodo enquadrado nos limite",0,0]],"25010090":[["22","I",1.0,"Sal em conformidade com os requisitos da legislação específica relativos ao teor de iodo enquadrado nos limite",0,0],["30","VI",0.6,"Cloreto de sódio",1,3],["90","XIV",1.0,"CLORETO DE SÓDIO",1,11]],"0903":[["23","I",1.0,"Mate da posição 09.03 da NCM/SH",0,0]],"19019090":[["24","I",1.0,"Farinha com baixo teor de proteína para pessoas com aminoacidopatias, acidemias e defeitos do ciclo da uréia d",0,0]],"19021900":[["25","I",1.0,"Massas com baixo teor de proteína para pessoas com aminoacidopatias, acidemias e defeitos do ciclo da uréia da",0,0]],"2106":[["26","I",1.0,"Fórmulas Dietoterápicas para Erros Inatos do Metabolismo da NCM 2106.9090",0,0]],"39269030":[["1","IV",0.6,"Bolsa para drenagem",1,1],["55","IV",0.6,"Bolsas para uso em medicina (hemodiálise e usos semelhantes)",1,1]],"90189099":[["2","IV",0.6,"Sistema para drenagem com conjunto intermediário para medição contínua da diurese",1,1],["29","IV",0.6,"Oxigenador de bolha com tubos para circulação extracorpórea",1,1],["30","IV",0.6,"Oxigenador de membrana com tubos para circulação extracorpórea",1,1],["31","IV",0.6,"Reservatório de cardiotomia",1,1],["32","IV",0.6,"Reservatório para cardioplegia com tubo sem filtro",1,1],["68","IV",0.6,"Outros instrumentos e aparelhos para medicina, cirurgia e odontologia, excluídas seringas e agulhas, das posiç",1,1],["72","IV",0.6,"Aparelho de anestesia com monitor multiparâmetros",1,1],["92","IV",0.6,"Dispositivo intrauterino (DIU)",1,1],["105","IV",0.6,"Conjunto descartável de balão intra-aórtico",1,1],["9","XII",1.0,"Aparelho de crioterapia",1,9]],"37011010":[["3","IV",0.6,"Chapas e filmes para raios-X, sensibilizados em uma face",1,1]],"30064020":[["4","IV",0.6,"Cimentos para reconstituição óssea",1,1]],"30049099":[["5","IV",0.6,"Substitutos de enxerto ósseo",1,1],["9","IV",0.6,"Conjuntos de troca e concentrados polieletrolíticos para diálise",1,1],["70","XIV",1.0,"CARBOPLATINA",1,11],["80","XIV",1.0,"CISPLATINA",1,11],["91","XIV",1.0,"CLORETO DE SUXAMETÔNIO",1,11],["152","XIV",1.0,"ENFLURANO",1,11],["189","XIV",1.0,"GLICOSE",1,11],["194","XIV",1.0,"HIDROXIUREIA",1,11],["195","XIV",1.0,"HIPOCLORITO DE SÓDIO",1,11],["210","XIV",1.0,"ISOFLURANO",1,11],["235","XIV",1.0,"METILPREDNISOLONA",1,11],["255","XIV",1.0,"OXALIPLATINA",1,11],["345","XIV",1.0,"TRIÓXIDO DE ARSÊNIO",1,11]],"39269040":[["6","IV",0.6,"Coletor para unidade de drenagem externa",1,1],["56","IV",0.6,"Artigos exclusivamente de laboratório de análises clínicas",1,1]],"391740":[["7","IV",0.6,"Conector completo com tampa",1,1],["8","IV",0.6,"Conector em Y",1,1]],"90189010":[["10","IV",0.6,"Conjunto para autotransfusão",1,1],["15","XII",1.0,"Bomba de infusão",1,9]],"90219019":[["11","IV",0.6,"Conjunto para hidrocefalia de baixo perfil",1,1],["12","IV",0.6,"Conjunto para hidrocefalia standard",1,1],["17","IV",0.6,"Espaçador de tendão",1,1],["34","IV",0.6,"Shuntlombo-peritonal",1,1],["37","IV",0.6,"Válvula para hidrocefalia",1,1],["38","IV",0.6,"Válvula para tratamento de ascite",1,1],["6","XIII",1.0,"Implantes cocleares",0,10]],"90219080":[["12","IV",0.6,"Conjunto para hidrocefalia standard",1,1]],"90219091":[["13","IV",0.6,"Eletrodo endocárdico definitivo",1,1],["14","IV",0.6,"Eletrodo epicárdico definitivo",1,1],["15","IV",0.6,"Eletrodo para marcapasso temporário endocárdico",1,1],["16","IV",0.6,"Eletrodo para marcapasso temporário epicárdico",1,1],["94","IV",0.6,"Introdutor de punção para implante de eletrodo endocárdico",1,1]],"37021020":[["18","IV",0.6,"Filmes especiais para raios-X sensibilizados em ambas as faces",1,1]],"37021010":[["19","IV",0.6,"Filmes especiais para raios-X sensibilizados em uma face",1,1]],"84212990":[["20","IV",0.6,"Filtro de linha arterial e venoso",1,1],["21","IV",0.6,"Filtro de sangue arterial e venoso para recirculação",1,1],["22","IV",0.6,"Filtro para cardioplegia",1,1]],"300610":[["23","IV",0.6,"Categutes esterilizados, materiais esterilizados semelhantes para suturas cirúrgicas (incluídos os fios absorv",1,1]],"90189040":[["24","IV",0.6,"Hemoconcentrador para circulação extracorpórea",1,1],["33","IV",0.6,"Rins artificiais",1,1]],"84212911":[["25","IV",0.6,"Hemodialisador capilar",1,1]],"90215000":[["26","IV",0.6,"Marcapasso cardíaco câmara dupla",1,1],["27","IV",0.6,"Marcapasso cardíaco multiprogramável com telemetria",1,1]],"37011029":[["28","IV",0.6,"Outras chapas e filmes para raios-X",1,1]],"30059090":[["35","IV",0.6,"Substituto temporário de pele (biológica/sintética) (por cm2)",1,1]],"30061090":[["36","IV",0.6,"Tela inorgânica",1,1]],"90219089":[["37","IV",0.6,"Válvula para hidrocefalia",1,1]],"28444390":[["39","IV",0.6,"Fonte de irídio 192",1,1]],"90219012":[["40","IV",0.6,"Stent vascular",1,1],["44","IV",0.6,"Espiral para embolização",1,1]],"84798999":[["41","IV",0.6,"Reprocessador de filtros utilizados em hemodiálise",1,1]],"90212900":[["42","IV",0.6,"Implantes osseointegráveis, na forma de parafuso, e seus componentes manufaturados, tais como tampas de proteç",1,1]],"90211010":[["42","IV",0.6,"Implantes osseointegráveis, na forma de parafuso, e seus componentes manufaturados, tais como tampas de proteç",1,1],["3","XII",1.0,"Artigos e aparelhos ortopédicos",1,9]],"90211020":[["42","IV",0.6,"Implantes osseointegráveis, na forma de parafuso, e seus componentes manufaturados, tais como tampas de proteç",1,1],["4","XII",1.0,"Artigos e aparelhos para fraturas",1,9]],"90219011":[["43","IV",0.6,"Cardiodesfibrilador implantável",1,1]],"30021221":[["45","IV",0.6,"Imunoglobulina anti-Rh",1,1],["48","IV",0.6,"Outras frações do sangue, exceto as preparadas como medicamentos, as imunoglobulinas séricas, o concentrado de",1,1]],"30021222":[["46","IV",0.6,"Outras imunoglobulinas séricas",1,1]],"30021223":[["47","IV",0.6,"Concentrado de fator VIII",1,1]],"30021229":[["48","IV",0.6,"Outras frações do sangue, exceto as preparadas como medicamentos, as imunoglobulinas séricas, o concentrado de",1,1]],"38221":[["49","IV",0.6,"Reagentes de diagnóstico ou de laboratório em qualquer suporte e reagentes de diagnóstico ou de laboratório pr",1,1]],"30063021":[["50","IV",0.6,"Reagentes de diagnóstico concebidos para serem administrados ao paciente, à base de somatoliberina",1,1]],"30064012":[["51","IV",0.6,"Produtos para obturação dentária, exceto cimentos",1,1]],"30067000":[["52","IV",0.6,"Preparações em gel, concebidas para uso em medicina humana ou veterinária como lubrificante para certas partes",1,1]],"30069110":[["53","IV",0.6,"Bolsas para uso em colostomia, ileostomia e urostomia",1,1]],"30069190":[["54","IV",0.6,"Equipamentos identificáveis para ostomia, exceto bolsas para uso em colostomia, ileostomia e urostomia",1,1]],"39269050":[["57","IV",0.6,"Acessórios de plástico do tipo utilizado em linhas de sangue para hemodiálise, tais como: obturadores, incluíd",1,1]],"40151":[["58","IV",0.6,"Luvas cirúrgicas e luvas de procedimento",1,1]],"901831":[["59","IV",0.6,"Seringas, mesmo com agulhas",1,1]],"901832":[["60","IV",0.6,"Agulhas tubulares de metal e agulhas para suturas",1,1]],"90183910":[["61","IV",0.6,"Agulhas, exceto as de metal e as para suturas",1,1]],"9018392":[["62","IV",0.6,"Sondas, cateteres e cânulas, individualmente ou em conjunto",1,1]],"90183930":[["63","IV",0.6,"Lancetas para vacinação e cautérios",1,1]],"9018399":[["64","IV",0.6,"Instrumentos semelhantes a seringas, a agulhas, a cateteres e a cânulas",1,1]],"9018491":[["65","IV",0.6,"Brocas para odontologia",1,1]],"90184920":[["66","IV",0.6,"Limas",1,1]],"90189095":[["67","IV",0.6,"Grampos e clipes, seus aplicadores e extratores",1,1]],"90183999":[["68","IV",0.6,"Outros instrumentos e aparelhos para medicina, cirurgia e odontologia, excluídas seringas e agulhas, das posiç",1,1],["102","IV",0.6,"Kit cânula",1,1]],"940290":[["69","IV",0.6,"Mesas de operação e para exames, camas hospitalares e de uso clínico",1,1]],"90182010":[["70","IV",0.6,"Fotocoagulador alaser",1,1]],"90189021":[["71","IV",0.6,"Bisturi elétrico",1,1]],"84198110":[["73","IV",0.6,"Autoclave",1,1]],"90185090":[["74","IV",0.6,"Retinógrafo",1,1]],"38210000":[["75","IV",0.6,"Meios de cultura",1,1],["4","IX",0.6,"Inoculantes, meios de cultura e outros microorganismos para uso agrícola; em conformidade com as definições e ",0,6]],"84198999":[["76","IV",0.6,"Termocicladores utilizados em diagnóstico e na pesquisa científica",1,1]],"84199040":[["77","IV",0.6,"Partes e peças de termocicladores",1,1]],"84798912":[["78","IV",0.6,"Pipetadores laboratoriais para diagnóstico e pesquisa científica",1,1]],"90272012":[["79","IV",0.6,"Cromatógrafo de fase líquida",1,1]],"90272021":[["80","IV",0.6,"Sequenciadores automáticos de ADN mediante eletroforese capilar",1,1]],"90272029":[["81","IV",0.6,"Aparelhos de eletroforese para diagnóstico e pesquisa científica",1,1]],"902730":[["82","IV",0.6,"Analisadores por espectrofotometria para diagnóstico e pesquisa científica",1,1]],"90275020":[["83","IV",0.6,"Analisadores por fotometria para diagnóstico e pesquisa científica",1,1]],"90275050":[["84","IV",0.6,"Citômetro de fluxo",1,1]],"90275090":[["85","IV",0.6,"Analisadores por radiações ópticas para diagnóstico e pesquisa científica",1,1]],"90278999":[["86","IV",0.6,"Outros analisadores para diagnóstico e pesquisa científica",1,1],["88","IV",0.6,"Outros analisadores para diagnóstico",1,1]],"90278100":[["87","IV",0.6,"Espectrômetro de massa",1,1]],"90279010":[["89","IV",0.6,"Micrótomo",1,1]],"9027909":[["90","IV",0.6,"Partes e peças de equipamentos analisadores laboratoriais",1,1]],"40141000":[["91","IV",0.6,"Preservativo",1,1]],"38249989":[["93","IV",0.6,"Substância para conservação de órgãos e tecidos",1,1],["2","IX",0.6,"Fertilizantes (adubos), em conformidade com as definições e demais requisitos da legislação específica",0,6],["6","IX",0.6,"Inseticidas, fungicidas, formicidas, herbicidas, parasiticidas, germicidas, acaricidas, nematicidas, raticidas",0,6]],"90219099":[["95","IV",0.6,"Enxerto tubular de politetrafluoretileno - PTFE (por cm2)",1,1],["96","IV",0.6,"Enxerto arterial e venoso tubular inorgânico",1,1],["97","IV",0.6,"Botão para crânio",1,1]],"90183929":[["98","IV",0.6,"Guia metálico para introdução de cateter duplo lumen",1,1],["99","IV",0.6,"Dilatador para implante de cateter duplo lumen",1,1],["100","IV",0.6,"Guia de troca para angioplastia",1,1],["101","IV",0.6,"Introdutor para cateter com e sem válvula",1,1],["103","IV",0.6,"Dreno para sucção",1,1],["104","IV",0.6,"Sistema de drenagem mediastinal",1,1]],"90183991":[["102","IV",0.6,"Kit cânula",1,1]],"87089910":[["1.1","V",0.6,"ACESSÓRIOS E ADAPTAÇÕES ESPECIAIS PARA SEREM INSTALADOS EM VEÍCULOS AUTOMOTORES PERTENCENTES OU QUE FOREM DEST",0,2],["1.2","V",0.6,"ACESSÓRIOS E ADAPTAÇÕES ESPECIAIS PARA SEREM INSTALADOS EM VEÍCULOS AUTOMOTORES PERTENCENTES OU QUE FOREM DEST",0,2],["1.3","V",0.6,"ACESSÓRIOS E ADAPTAÇÕES ESPECIAIS PARA SEREM INSTALADOS EM VEÍCULOS AUTOMOTORES PERTENCENTES OU QUE FOREM DEST",0,2],["1.4","V",0.6,"ACESSÓRIOS E ADAPTAÇÕES ESPECIAIS PARA SEREM INSTALADOS EM VEÍCULOS AUTOMOTORES PERTENCENTES OU QUE FOREM DEST",0,2],["1.5","V",0.6,"ACESSÓRIOS E ADAPTAÇÕES ESPECIAIS PARA SEREM INSTALADOS EM VEÍCULOS AUTOMOTORES PERTENCENTES OU QUE FOREM DEST",0,2],["1.7","V",0.6,"ACESSÓRIOS E ADAPTAÇÕES ESPECIAIS PARA SEREM INSTALADOS EM VEÍCULOS AUTOMOTORES PERTENCENTES OU QUE FOREM DEST",0,2]],"87082999":[["1.6","V",0.6,"ACESSÓRIOS E ADAPTAÇÕES ESPECIAIS PARA SEREM INSTALADOS EM VEÍCULOS AUTOMOTORES PERTENCENTES OU QUE FOREM DEST",0,2],["1.8","V",0.6,"ACESSÓRIOS E ADAPTAÇÕES ESPECIAIS PARA SEREM INSTALADOS EM VEÍCULOS AUTOMOTORES PERTENCENTES OU QUE FOREM DEST",0,2],["1.9","V",0.6,"ACESSÓRIOS E ADAPTAÇÕES ESPECIAIS PARA SEREM INSTALADOS EM VEÍCULOS AUTOMOTORES PERTENCENTES OU QUE FOREM DEST",0,2],["1.10","V",0.6,"ACESSÓRIOS E ADAPTAÇÕES ESPECIAIS PARA SEREM INSTALADOS EM VEÍCULOS AUTOMOTORES PERTENCENTES OU QUE FOREM DEST",0,2],["1.12","V",0.6,"ACESSÓRIOS E ADAPTAÇÕES ESPECIAIS PARA SEREM INSTALADOS EM VEÍCULOS AUTOMOTORES PERTENCENTES OU QUE FOREM DEST",0,2]],"84289090":[["1.11","V",0.6,"ACESSÓRIOS E ADAPTAÇÕES ESPECIAIS PARA SEREM INSTALADOS EM VEÍCULOS AUTOMOTORES PERTENCENTES OU QUE FOREM DEST",0,2]],"84253110":[["1.13","V",0.6,"ACESSÓRIOS E ADAPTAÇÕES ESPECIAIS PARA SEREM INSTALADOS EM VEÍCULOS AUTOMOTORES PERTENCENTES OU QUE FOREM DEST",0,2]],"66020000":[["2.1","V",0.6,"PRODUTOS DESTINADOS A USO DE PESSOA COM DEFICIÊNCIA VISUAL - Bengala inteiriça, dobrável ou telescópica, com p",0,2]],"91021110":[["2.2","V",0.6,"PRODUTOS DESTINADOS A USO DE PESSOA COM DEFICIÊNCIA VISUAL - Relógio em braille, com sintetizador de voz e mos",0,2]],"91021190":[["2.2","V",0.6,"PRODUTOS DESTINADOS A USO DE PESSOA COM DEFICIÊNCIA VISUAL - Relógio em braille, com sintetizador de voz e mos",0,2]],"91029100":[["2.2","V",0.6,"PRODUTOS DESTINADOS A USO DE PESSOA COM DEFICIÊNCIA VISUAL - Relógio em braille, com sintetizador de voz e mos",0,2]],"90251990":[["2.3","V",0.6,"PRODUTOS DESTINADOS A USO DE PESSOA COM DEFICIÊNCIA VISUAL - Termômetro digital com sistema de voz",0,2]],"84701000":[["2.4","V",0.6,"PRODUTOS DESTINADOS A USO DE PESSOA COM DEFICIÊNCIA VISUAL - Calculadora digital com sistema de voz, com verba",0,2]],"84702900":[["2.4","V",0.6,"PRODUTOS DESTINADOS A USO DE PESSOA COM DEFICIÊNCIA VISUAL - Calculadora digital com sistema de voz, com verba",0,2]],"85437099":[["2.5","V",0.6,"PRODUTOS DESTINADOS A USO DE PESSOA COM DEFICIÊNCIA VISUAL - Agenda eletrônica com teclado embraille , com ou ",0,2]],"90172000":[["2.6","V",0.6,"PRODUTOS DESTINADOS A USO DE PESSOA COM DEFICIÊNCIA VISUAL - Reglete para escrita embraille",0,2]],"84716090":[["2.7","V",0.6,"PRODUTOS DESTINADOS A USO DE PESSOA COM DEFICIÊNCIA VISUAL - Display braille e teclado emBraille para uso em m",0,2]],"84729099":[["2.8","V",0.6,"PRODUTOS DESTINADOS A USO DE PESSOA COM DEFICIÊNCIA VISUAL - Máquina de escrever para escrita embraille , manu",0,2]],"84433222":[["2.9","V",0.6,"PRODUTOS DESTINADOS A USO DE PESSOA COM DEFICIÊNCIA VISUAL - Impressora de caracteres embraille para uso com m",0,2]],"84718000":[["2.10","V",0.6,"PRODUTOS DESTINADOS A USO DE PESSOA COM DEFICIÊNCIA VISUAL - Equipamento sintetizador para reprodução em voz d",0,2]],"85171":[["3.1","V",0.6,"PRODUTOS DESTINADOS AO USO DE PESSOAS COM DEFICIÊNCIA AUDITIVA - Aparelho telefônico com teclado alfanumérico ",0,2]],"91031000":[["3.2","V",0.6,"PRODUTOS DESTINADOS AO USO DE PESSOAS COM DEFICIÊNCIA AUDITIVA - Relógio despertador vibratório e/ou luminoso",0,2]],"91051100":[["3.2","V",0.6,"PRODUTOS DESTINADOS AO USO DE PESSOAS COM DEFICIÊNCIA AUDITIVA - Relógio despertador vibratório e/ou luminoso",0,2]],"84716053":[["3.3","V",0.6,"PRODUTOS DESTINADOS AO USO DE PESSOAS COM DEFICIÊNCIA AUDITIVA - Unidades de entrada de dados tipomouse contro",0,2]],"29362812":[["1","VI",0.6,"Acetato de dextroalfatocoferol",1,3]],"29224190":[["2","VI",0.6,"Acetato de lisina",1,3]],"29152990":[["3","VI",0.6,"Acetato de potássio",1,3],["5","VI",0.6,"Acetato de zinco",1,3]],"29152910":[["4","VI",0.6,"Acetato de sódio",1,3]],"29225039":[["6","VI",0.6,"Acetiltirosina",1,3],["78","VI",0.6,"Tirosina",1,3]],"29152100":[["7","VI",0.6,"Ácido acético",1,3],["8","IX",0.6,"Ácido nítrico, ácido sulfúrico, ácido fosfórico, fosfatos de cálcio naturais, enxofre, ácido clorídrico, ácido",0,6]],"29362710":[["8","VI",0.6,"Ácido ascórbico",1,3]],"29224990":[["9","VI",0.6,"Ácido aspártico",1,3],["16","VI",0.6,"Alanilglutamina",1,3],["17","VI",0.6,"Alanina",1,3],["20","VI",0.6,"Asparagina",1,3],["37","VI",0.6,"Fenilalanina",1,3],["62","VI",0.6,"Isoleucina",1,3],["64","VI",0.6,"Leucina",1,3],["65","VI",0.6,"Levovalina",1,3],["70","VI",0.6,"Prolina",1,3],["77","VI",0.6,"Taurina",1,3]],"29181400":[["10","VI",0.6,"Ácido cítrico",1,3]],"29362911":[["11","VI",0.6,"Ácido fólico",1,3]],"29224210":[["12","VI",0.6,"Ácido glutâmico",1,3]],"29181990":[["13","VI",0.6,"Ácido málico",1,3]],"28111990":[["14","VI",0.6,"Ácido selenioso",1,3]],"20021000":[["15","VI",0.6,"Água para injeção",1,3],["16","VII",0.6,"Produtos hortícolas, mesmo misturados entre si, apenas pré-cozidos ou cozidos em água ou vapor, sem adição de ",0,4]],"30021236":[["18","VI",0.6,"Albumina humana",1,3]],"29252919":[["19","VI",0.6,"Arginina",1,3]],"28363000":[["21","VI",0.6,"Bicarbonato de sódio",1,3]],"29362931":[["22","VI",0.6,"Biotina",1,3],["58","XIV",1.0,"BIOTINA",1,11]],"29362610":[["23","VI",0.6,"Cianocobalamina",1,3]],"29309039":[["24","VI",0.6,"Cistina",1,3]],"28273993":[["25","VI",0.6,"Cloreto crômico",1,3]],"28272010":[["26","VI",0.6,"Cloreto de cálcio",1,3]],"28272090":[["26","VI",0.6,"Cloreto de cálcio",1,3]],"28273110":[["27","VI",0.6,"Cloreto de magnésio",1,3]],"28273190":[["27","VI",0.6,"Cloreto de magnésio",1,3]],"28273995":[["28","VI",0.6,"Cloreto de manganês",1,3]],"31042010":[["29","VI",0.6,"Cloreto de potássio",1,3]],"31042090":[["29","VI",0.6,"Cloreto de potássio",1,3]],"28273998":[["31","VI",0.6,"Cloreto de zinco",1,3]],"29362520":[["32","VI",0.6,"Cloridrato de piridoxina",1,3]],"29362210":[["33","VI",0.6,"Cloridrato de tiamina",1,3]],"29362290":[["34","VI",0.6,"Cocarboxilase",1,3],["52","VI",0.6,"Fosfato de tiamina",1,3]],"29362921":[["35","VI",0.6,"Colecalciferol",1,3]],"29362929":[["36","VI",0.6,"Ergocalciferol",1,3]],"29362940":[["38","VI",0.6,"Fitomenadiona",1,3]],"22029900":[["47","VI",0.6,"Fórmula hiperlipídica, para suplementação de triglicerídios de cadeia média ou triheptanoína",1,3],["48","VI",0.6,"Preparação líquida, de quatro partes de trioleato de glicerol de ácido para uma parte de trierucato de glicero",1,3],["2","VII",0.6,"Leite fermentado, bebidas e compostos lácteos, em conformidade com os requisitos da legislação específica, cla",0,4]],"28352400":[["49","VI",0.6,"Fosfato de potássio dibásico",1,3],["50","VI",0.6,"Fosfato de potássio monobásico",1,3]],"28352200":[["51","VI",0.6,"Fosfato de sódio monobásico",1,3]],"29362320":[["53","VI",0.6,"Fosfato sódico de riboflavina",1,3]],"17025000":[["54","VI",0.6,"Frutose",1,3]],"29199090":[["55","VI",0.6,"Glicerofosfato de sódio",1,3]],"29224910":[["56","VI",0.6,"Glicina",1,3]],"29181610":[["57","VI",0.6,"Gliconato de cálcio",1,3]],"17023011":[["58","VI",0.6,"Glicose",1,3]],"29332992":[["59","VI",0.6,"Histidina",1,3]],"35051000":[["60","VI",0.6,"Icodextrina",1,3]],"28276012":[["61","VI",0.6,"Iodeto de potássio",1,3]],"29232000":[["63","VI",0.6,"Lecitina de ovo",1,3]],"29224110":[["66","VI",0.6,"Lisina",1,3]],"29304010":[["67","VI",0.6,"Metionina",1,3]],"29304090":[["67","VI",0.6,"Metionina",1,3]],"29362952":[["68","VI",0.6,"Nicotinamida",1,3]],"29362113":[["69","VI",0.6,"Palmitato de retinol",1,3]],"29362310":[["71","VI",0.6,"Riboflavina",1,3]],"28429000":[["72","VI",0.6,"Selenito de sódio",1,3]],"29225099":[["73","VI",0.6,"Serina",1,3],["80","VI",0.6,"Treonina",1,3]],"29054400":[["74","VI",0.6,"Sorbitol",1,3]],"28332100":[["75","VI",0.6,"Sulfato de magnésio",1,3]],"28332970":[["76","VI",0.6,"Sulfato de zinco",1,3]],"29362811":[["79","VI",0.6,"Tocoferol",1,3]],"15131900":[["81","VI",0.6,"Triglicerídeos de cadeia média",1,3]],"15132911":[["81","VI",0.6,"Triglicerídeos de cadeia média",1,3]],"03061":[["1","VII",0.6,"Crustáceos (exceto lagostas e lagostim) e moluscos dos seguintes códigos e subposições da NCM/SH: a) 0306.1 e ",0,4]],"03063":[["1","VII",0.6,"Crustáceos (exceto lagostas e lagostim) e moluscos dos seguintes códigos e subposições da NCM/SH: a) 0306.1 e ",0,4]],"030611":[["1","VII",0.6,"Crustáceos (exceto lagostas e lagostim) e moluscos dos seguintes códigos e subposições da NCM/SH: a) 0306.1 e ",0,4]],"03061500":[["1","VII",0.6,"Crustáceos (exceto lagostas e lagostim) e moluscos dos seguintes códigos e subposições da NCM/SH: a) 0306.1 e ",0,4]],"03063100":[["1","VII",0.6,"Crustáceos (exceto lagostas e lagostim) e moluscos dos seguintes códigos e subposições da NCM/SH: a) 0306.1 e ",0,4]],"03063400":[["1","VII",0.6,"Crustáceos (exceto lagostas e lagostim) e moluscos dos seguintes códigos e subposições da NCM/SH: a) 0306.1 e ",0,4]],"03063910":[["1","VII",0.6,"Crustáceos (exceto lagostas e lagostim) e moluscos dos seguintes códigos e subposições da NCM/SH: a) 0306.1 e ",0,4]],"03073100":[["1","VII",0.6,"Crustáceos (exceto lagostas e lagostim) e moluscos dos seguintes códigos e subposições da NCM/SH: a) 0306.1 e ",0,4]],"03073200":[["1","VII",0.6,"Crustáceos (exceto lagostas e lagostim) e moluscos dos seguintes códigos e subposições da NCM/SH: a) 0306.1 e ",0,4]],"03074200":[["1","VII",0.6,"Crustáceos (exceto lagostas e lagostim) e moluscos dos seguintes códigos e subposições da NCM/SH: a) 0306.1 e ",0,4]],"030743":[["1","VII",0.6,"Crustáceos (exceto lagostas e lagostim) e moluscos dos seguintes códigos e subposições da NCM/SH: a) 0306.1 e ",0,4]],"03075100":[["1","VII",0.6,"Crustáceos (exceto lagostas e lagostim) e moluscos dos seguintes códigos e subposições da NCM/SH: a) 0306.1 e ",0,4]],"03075200":[["1","VII",0.6,"Crustáceos (exceto lagostas e lagostim) e moluscos dos seguintes códigos e subposições da NCM/SH: a) 0306.1 e ",0,4]],"03079100":[["1","VII",0.6,"Crustáceos (exceto lagostas e lagostim) e moluscos dos seguintes códigos e subposições da NCM/SH: a) 0306.1 e ",0,4]],"03079200":[["1","VII",0.6,"Crustáceos (exceto lagostas e lagostim) e moluscos dos seguintes códigos e subposições da NCM/SH: a) 0306.1 e ",0,4]],"04032000":[["2","VII",0.6,"Leite fermentado, bebidas e compostos lácteos, em conformidade com os requisitos da legislação específica, cla",0,4]],"04039000":[["2","VII",0.6,"Leite fermentado, bebidas e compostos lácteos, em conformidade com os requisitos da legislação específica, cla",0,4]],"04090000":[["3","VII",0.6,"Mel natural do código 0409.00.00 da NCM/SH",0,4]],"110100":[["4","VII",0.6,"Farinha das posições 1101.00, 11.02, 11.05, 11.06 e 12.08 da NCM/SH; ressalvados os produtos relacionados no A",0,4]],"1102":[["4","VII",0.6,"Farinha das posições 1101.00, 11.02, 11.05, 11.06 e 12.08 da NCM/SH; ressalvados os produtos relacionados no A",0,4]],"1105":[["4","VII",0.6,"Farinha das posições 1101.00, 11.02, 11.05, 11.06 e 12.08 da NCM/SH; ressalvados os produtos relacionados no A",0,4]],"1106":[["4","VII",0.6,"Farinha das posições 1101.00, 11.02, 11.05, 11.06 e 12.08 da NCM/SH; ressalvados os produtos relacionados no A",0,4]],"1208":[["4","VII",0.6,"Farinha das posições 1101.00, 11.02, 11.05, 11.06 e 12.08 da NCM/SH; ressalvados os produtos relacionados no A",0,4]],"11031100":[["5","VII",0.6,"Grumos e sêmolas de cereais dos códigos 1103.11.00 e 1103.19.00 da NCM/SH; ressalvados os produtos relacionado",0,4]],"11031900":[["5","VII",0.6,"Grumos e sêmolas de cereais dos códigos 1103.11.00 e 1103.19.00 da NCM/SH; ressalvados os produtos relacionado",0,4]],"11041":[["6","VII",0.6,"Grãos de cereais das subposições 1104.1 e 1104.2 da NCM/SH; ressalvados os produtos relacionados no Anexo I",0,4]],"11042":[["6","VII",0.6,"Grãos de cereais das subposições 1104.1 e 1104.2 da NCM/SH; ressalvados os produtos relacionados no Anexo I",0,4]],"11081200":[["7","VII",0.6,"Amido de milho do código 1108.12.00 da NCM/SH",0,4]],"150790":[["8","VII",0.6,"Óleos de soja, de milho, canola e demais óleos vegetais, em conformidade com os requisitos da legislação espec",0,4]],"1508":[["8","VII",0.6,"Óleos de soja, de milho, canola e demais óleos vegetais, em conformidade com os requisitos da legislação espec",0,4]],"1511":[["8","VII",0.6,"Óleos de soja, de milho, canola e demais óleos vegetais, em conformidade com os requisitos da legislação espec",0,4]],"1512":[["8","VII",0.6,"Óleos de soja, de milho, canola e demais óleos vegetais, em conformidade com os requisitos da legislação espec",0,4]],"1513":[["8","VII",0.6,"Óleos de soja, de milho, canola e demais óleos vegetais, em conformidade com os requisitos da legislação espec",0,4]],"1514":[["8","VII",0.6,"Óleos de soja, de milho, canola e demais óleos vegetais, em conformidade com os requisitos da legislação espec",0,4]],"1515":[["8","VII",0.6,"Óleos de soja, de milho, canola e demais óleos vegetais, em conformidade com os requisitos da legislação espec",0,4]],"19022000":[["9","VII",0.6,"Massas alimentícias dos códigos 1902.20.00 e 1902.30.00 da NCM/SH",0,4]],"19023000":[["9","VII",0.6,"Massas alimentícias dos códigos 1902.20.00 e 1902.30.00 da NCM/SH",0,4]],"2009":[["10","VII",0.6,"Sucos naturais de fruta ou de produtos hortícolas sem adição de açúcar ou de outros edulcorantes e sem conserv",0,4]],"2008":[["11","VII",0.6,"Polpas de frutas ou de produtos hortícolas sem adição de açúcar ou de outros edulcorantes e sem conservantes c",0,4]],"19059010":[["12","VII",0.6,"Pão de Forma do código 1905.90.10 da NCM/SH",0,4]],"20029000":[["13","VII",0.6,"Extrato de tomate classificado no código 2002.90.00 da NCM/SH",0,4]],"0711":[["14","VII",0.6,"Frutas, produtos hortícolas e demais produtos vegetais, sem adição de açúcar ou de outros edulcorantes, classi",0,4]],"0812":[["14","VII",0.6,"Frutas, produtos hortícolas e demais produtos vegetais, sem adição de açúcar ou de outros edulcorantes, classi",0,4]],"08140000":[["14","VII",0.6,"Frutas, produtos hortícolas e demais produtos vegetais, sem adição de açúcar ou de outros edulcorantes, classi",0,4]],"2004":[["16","VII",0.6,"Produtos hortícolas, mesmo misturados entre si, apenas pré-cozidos ou cozidos em água ou vapor, sem adição de ",0,4]],"2005":[["16","VII",0.6,"Produtos hortícolas, mesmo misturados entre si, apenas pré-cozidos ou cozidos em água ou vapor, sem adição de ",0,4]],"20081":[["17","VII",0.6,"Fruta de casca rija regional, amendoins e outras sementes, mesmo misturados entre si, apenas torrados ou cozid",0,4]],"34011190":[["1","VIII",0.6,"Sabões de toucador classificados no código 3401.11.90 da NCM/SH",0,5]],"33061000":[["2","VIII",0.6,"Dentifrícios do código 3306.10.00 da NCM/SH",0,5]],"96032100":[["3","VIII",0.6,"Escovas de dentes do código 9603.21.00 da NCM/SH",0,5]],"48181000":[["4","VIII",0.6,"Papel higiênico do código 4818.10.00 da NCM/SH",0,5]],"38089419":[["5","VIII",0.6,"Água sanitária classificada no código 3808.94.19 da NCM/SH",0,5]],"34011900":[["6","VIII",0.6,"Sabões em barra classificados no código 3401.19.00 da NCM/SH",0,5]],"96190000":[["7","VIII",0.6,"Fraldas e artigos higiênicos semelhantes, de qualquer matéria classificadas no código 9619.00.00 da NCM/SH",0,5]],"31010000":[["1","IX",0.6,"Biofertilizantes, em conformidade com as definições e demais requisitos da legislação específica",0,6]],"38249977":[["2","IX",0.6,"Fertilizantes (adubos), em conformidade com as definições e demais requisitos da legislação específica",0,6]],"38249979":[["2","IX",0.6,"Fertilizantes (adubos), em conformidade com as definições e demais requisitos da legislação específica",0,6]],"300249":[["4","IX",0.6,"Inoculantes, meios de cultura e outros microorganismos para uso agrícola; em conformidade com as definições e ",0,6]],"30029000":[["4","IX",0.6,"Inoculantes, meios de cultura e outros microorganismos para uso agrícola; em conformidade com as definições e ",0,6],["12","IX",0.6,"Vacinas, soros e medicamentos, de uso veterinário, exceto de animais domésticos",0,6],["254","XIV",1.0,"ONASEMNOGENO ABEPARVOVEQUE",1,11]],"3824":[["5","IX",0.6,"Bioestimulantes e bioinsumos para controle fitossanitário, em conformidade com as definições e demais requisit",0,6]],"38070000":[["5","IX",0.6,"Bioestimulantes e bioinsumos para controle fitossanitário, em conformidade com as definições e demais requisit",0,6]],"1211":[["5","IX",0.6,"Bioestimulantes e bioinsumos para controle fitossanitário, em conformidade com as definições e demais requisit",0,6]],"3808":[["5","IX",0.6,"Bioestimulantes e bioinsumos para controle fitossanitário, em conformidade com as definições e demais requisit",0,6],["6","IX",0.6,"Inseticidas, fungicidas, formicidas, herbicidas, parasiticidas, germicidas, acaricidas, nematicidas, raticidas",0,6]],"0506":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"12011000":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"12130000":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"13019090":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"1302199":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"14019000":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"14049090":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"21022000":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"2302":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6],["20","IX",0.6,"Farelos e tortas de produtos vegetais e demais resíduos e desperdícios das indústrias alimentares; todos desti",0,6]],"2303":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6],["20","IX",0.6,"Farelos e tortas de produtos vegetais e demais resíduos e desperdícios das indústrias alimentares; todos desti",0,6]],"230400":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6],["20","IX",0.6,"Farelos e tortas de produtos vegetais e demais resíduos e desperdícios das indústrias alimentares; todos desti",0,6]],"23050000":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6],["20","IX",0.6,"Farelos e tortas de produtos vegetais e demais resíduos e desperdícios das indústrias alimentares; todos desti",0,6]],"2306":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6],["20","IX",0.6,"Farelos e tortas de produtos vegetais e demais resíduos e desperdícios das indústrias alimentares; todos desti",0,6]],"23080000":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6],["20","IX",0.6,"Farelos e tortas de produtos vegetais e demais resíduos e desperdícios das indústrias alimentares; todos desti",0,6]],"27030000":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"28399010":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"28399050":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"29224":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"293040":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6],["21","IX",0.6,"Alho em pó, sal mineralizado, farinhas de peixe, de ostra, de carne, de osso, de pena, de sangue e de víscera,",0,6]],"3301":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"38029040":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"380400":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"38249971":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"44013900":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"44014":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"44029000":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"47010000":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"53050090":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"68062000":[["7","IX",0.6,"Calcário, casca de coco triturada, turfa; tortas, bagaços e demais resíduos e desperdícios vegetais das indúst",0,6]],"25030010":[["8","IX",0.6,"Ácido nítrico, ácido sulfúrico, ácido fosfórico, fosfatos de cálcio naturais, enxofre, ácido clorídrico, ácido",0,6]],"25030090":[["8","IX",0.6,"Ácido nítrico, ácido sulfúrico, ácido fosfórico, fosfatos de cálcio naturais, enxofre, ácido clorídrico, ácido",0,6]],"25101010":[["8","IX",0.6,"Ácido nítrico, ácido sulfúrico, ácido fosfórico, fosfatos de cálcio naturais, enxofre, ácido clorídrico, ácido",0,6]],"25101090":[["8","IX",0.6,"Ácido nítrico, ácido sulfúrico, ácido fosfórico, fosfatos de cálcio naturais, enxofre, ácido clorídrico, ácido",0,6]],"25102010":[["8","IX",0.6,"Ácido nítrico, ácido sulfúrico, ácido fosfórico, fosfatos de cálcio naturais, enxofre, ácido clorídrico, ácido",0,6]],"25102090":[["8","IX",0.6,"Ácido nítrico, ácido sulfúrico, ácido fosfórico, fosfatos de cálcio naturais, enxofre, ácido clorídrico, ácido",0,6]],"28020000":[["8","IX",0.6,"Ácido nítrico, ácido sulfúrico, ácido fosfórico, fosfatos de cálcio naturais, enxofre, ácido clorídrico, ácido",0,6]],"28061020":[["8","IX",0.6,"Ácido nítrico, ácido sulfúrico, ácido fosfórico, fosfatos de cálcio naturais, enxofre, ácido clorídrico, ácido",0,6]],"28070010":[["8","IX",0.6,"Ácido nítrico, ácido sulfúrico, ácido fosfórico, fosfatos de cálcio naturais, enxofre, ácido clorídrico, ácido",0,6]],"28080010":[["8","IX",0.6,"Ácido nítrico, ácido sulfúrico, ácido fosfórico, fosfatos de cálcio naturais, enxofre, ácido clorídrico, ácido",0,6]],"28092011":[["8","IX",0.6,"Ácido nítrico, ácido sulfúrico, ácido fosfórico, fosfatos de cálcio naturais, enxofre, ácido clorídrico, ácido",0,6]],"28092019":[["8","IX",0.6,"Ácido nítrico, ácido sulfúrico, ácido fosfórico, fosfatos de cálcio naturais, enxofre, ácido clorídrico, ácido",0,6]],"28111920":[["8","IX",0.6,"Ácido nítrico, ácido sulfúrico, ácido fosfórico, fosfatos de cálcio naturais, enxofre, ácido clorídrico, ácido",0,6]],"28151100":[["8","IX",0.6,"Ácido nítrico, ácido sulfúrico, ácido fosfórico, fosfatos de cálcio naturais, enxofre, ácido clorídrico, ácido",0,6]],"28151200":[["8","IX",0.6,"Ácido nítrico, ácido sulfúrico, ácido fosfórico, fosfatos de cálcio naturais, enxofre, ácido clorídrico, ácido",0,6]],"28362010":[["8","IX",0.6,"Ácido nítrico, ácido sulfúrico, ácido fosfórico, fosfatos de cálcio naturais, enxofre, ácido clorídrico, ácido",0,6]],"28362090":[["8","IX",0.6,"Ácido nítrico, ácido sulfúrico, ácido fosfórico, fosfatos de cálcio naturais, enxofre, ácido clorídrico, ácido",0,6]],"3507904":[["9","IX",0.6,"Enzimas preparadas para decomposição de matéria orgânica animal e vegetal",0,6]],"0601":[["11","IX",0.6,"Mudas de plantas e demais materiais propagativos de plantas e fungos, inclusive plantas e fungos nativos de es",0,6]],"0602":[["11","IX",0.6,"Mudas de plantas e demais materiais propagativos de plantas e fungos, inclusive plantas e fungos nativos de es",0,6]],"300212":[["12","IX",0.6,"Vacinas, soros e medicamentos, de uso veterinário, exceto de animais domésticos",0,6]],"300215":[["12","IX",0.6,"Vacinas, soros e medicamentos, de uso veterinário, exceto de animais domésticos",0,6]],"300242":[["12","IX",0.6,"Vacinas, soros e medicamentos, de uso veterinário, exceto de animais domésticos",0,6]],"3004":[["12","IX",0.6,"Vacinas, soros e medicamentos, de uso veterinário, exceto de animais domésticos",0,6]],"01051":[["13","IX",0.6,"Aves de um dia, exceto as ornamentais",0,6]],"05111000":[["14","IX",0.6,"Embriões e sêmen, congelado ou resfriado",0,6]],"05119":[["14","IX",0.6,"Embriões e sêmen, congelado ou resfriado",0,6]],"0102":[["15","IX",0.6,"Reprodutores de raça pura, inclusive matrizes de animais puros de origem com registro genealógico; em conformi",0,6]],"0103":[["15","IX",0.6,"Reprodutores de raça pura, inclusive matrizes de animais puros de origem com registro genealógico; em conformi",0,6]],"0104":[["15","IX",0.6,"Reprodutores de raça pura, inclusive matrizes de animais puros de origem com registro genealógico; em conformi",0,6]],"04071":[["16","IX",0.6,"Ovos fertilizados",0,6]],"01069000":[["17","IX",0.6,"Girinos e alevinos",0,6]],"230990":[["18","IX",0.6,"Rações para animais, concentrados, suplementos, aditivos, premix ou núcleo, exceto para animais domésticos",0,6]],"2301":[["20","IX",0.6,"Farelos e tortas de produtos vegetais e demais resíduos e desperdícios das indústrias alimentares; todos desti",0,6]],"0210":[["21","IX",0.6,"Alho em pó, sal mineralizado, farinhas de peixe, de ostra, de carne, de osso, de pena, de sangue e de víscera,",0,6]],"0309":[["21","IX",0.6,"Alho em pó, sal mineralizado, farinhas de peixe, de ostra, de carne, de osso, de pena, de sangue e de víscera,",0,6]],"07129010":[["21","IX",0.6,"Alho em pó, sal mineralizado, farinhas de peixe, de ostra, de carne, de osso, de pena, de sangue e de víscera,",0,6]],"250100":[["21","IX",0.6,"Alho em pó, sal mineralizado, farinhas de peixe, de ostra, de carne, de osso, de pena, de sangue e de víscera,",0,6]],"25210000":[["21","IX",0.6,"Alho em pó, sal mineralizado, farinhas de peixe, de ostra, de carne, de osso, de pena, de sangue e de víscera,",0,6]],"23033000":[["35","IX",0.6,"Vinhaça",0,6]],"23032000":[["35","IX",0.6,"Vinhaça",0,6]],"49119100":[["42","X",0.6,"Fotografias artísticas originais",0,7]],"97019100":[["43","X",0.6,"Quadros, pinturas e desenhos, artísticos originais",0,7]],"97029000":[["44","X",0.6,"Gravuras, estampas e litografias, artísticas originais",0,7]],"97039000":[["45","X",0.6,"Produções originais de arte estatutária ou de escultura",0,7]],"8709":[["2.1","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Vi",0,8],["2.3","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Ou",0,8]],"87100000":[["2.2","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Ca",0,8]],"90318099":[["2.4","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Si",0,8]],"8701":[["2.5","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Tr",0,8]],"85261000":[["2.6","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Ra",0,8]],"93012000":[["2.7","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Fo",0,8]],"36020000":[["2.8","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Ex",0,8]],"9306":[["2.8","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Ex",0,8],["2.11","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Mi",0,8],["2.13","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Bo",0,8]],"85258929":[["2.9","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Op",0,8]],"21069030":[["2.10","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Ra",0,8]],"93062":[["2.12","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Ca",0,8]],"8802":[["2.14","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Ae",0,8]],"8806":[["2.14","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Ae",0,8]],"88026000":[["2.15","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Ve",0,8]],"88040000":[["2.16","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Pa",0,8]],"88051000":[["2.17","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Ap",0,8]],"88052100":[["2.18","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Si",0,8]],"8805":[["2.19","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Eq",0,8]],"901420":[["2.20","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Eq",0,8]],"89012000":[["2.21","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Em",0,8]],"89061000":[["2.21","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Em",0,8]],"85176259":[["2.22","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Di",0,8],["2.23","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Di",0,8],["2.26","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Fi",0,8]],"852352":[["2.24","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Di",0,8]],"84719014":[["2.24","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Di",0,8]],"84715090":[["2.25","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Eq",0,8]],"84714900":[["2.26","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Fi",0,8]],"85176234":[["2.27","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Sw",0,8]],"8517624":[["2.27","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Sw",0,8]],"8517627":[["2.28","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Di",0,8]],"852351":[["2.29","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Un",0,8],["2.30","XI",0.6,"BENS RELACIONADOS À SOBERANIA E À SEGURANÇA NACIONAL, À SEGURANÇA DA INFORMAÇÃO E À SEGURANÇA CIBERNÉTICA - Se",0,8]],"90181100":[["1.1","XII",1.0,"Aparelhos de eletrodiagnóstico (incluídos os aparelhos de exploração funcional e os de verificação de parâmetr",1,9]],"90181980":[["1.2","XII",1.0,"Aparelhos de eletrodiagnóstico (incluídos os aparelhos de exploração funcional e os de verificação de parâmetr",1,9],["1.3","XII",1.0,"Aparelhos de eletrodiagnóstico (incluídos os aparelhos de exploração funcional e os de verificação de parâmetr",1,9],["14","XII",1.0,"Monitor multiparâmetros",1,9]],"901820":[["2","XII",1.0,"Aparelhos de raios ultravioleta ou infravermelhos",1,9]],"90213":[["5","XII",1.0,"Artigos e aparelhos de prótese, exceto os dentários e os produtos classificados nos códigos 9021.39.91 e 9021.",1,9]],"90221200":[["6","XII",1.0,"Tomógrafo computadorizado",1,9]],"902213":[["7","XII",1.0,"Aparelhos de raio X, móveis, exceto os produtos classificados no código 9022.19.91",1,9]],"902214":[["7","XII",1.0,"Aparelhos de raio X, móveis, exceto os produtos classificados no código 9022.19.91",1,9]],"902219":[["7","XII",1.0,"Aparelhos de raio X, móveis, exceto os produtos classificados no código 9022.19.91",1,9]],"90222110":[["8","XII",1.0,"Aparelho de radiocobalto (bomba de cobalto)",1,9]],"90222120":[["10","XII",1.0,"Aparelho de gamaterapia",1,9]],"90222190":[["11","XII",1.0,"Aparelhos que utilizem radiações alfa, beta, gama ou outras radiações ionizantes, para usos médicos, cirúrgico",1,9]],"9025":[["12","XII",1.0,"Densímetros, areômetros, pesa-líquidos e instrumentos flutuantes semelhantes, termômetros, pirômetros, barômet",1,9]],"90192040":[["13","XII",1.0,"Respirador",1,9]],"90181300":[["16","XII",1.0,"Aparelhos de diagnóstico por visualização de ressonância magnética",1,9]],"901812":[["17","XII",1.0,"Aparelhos de ultrassom",1,9]],"83024100":[["1","XIII",1.0,"Barra de apoio para pessoa com deficiência física",0,10]],"87131000":[["2.1","XIII",1.0,"CADEIRA DE RODAS E OUTROS VEÍCULOS PARA DEFICIENTES, MESMO COM MOTOR OU OUTRO MECANISMO DE PROPULSÃO - Sem mec",0,10]],"87139000":[["2.2","XIII",1.0,"CADEIRA DE RODAS E OUTROS VEÍCULOS PARA DEFICIENTES, MESMO COM MOTOR OU OUTRO MECANISMO DE PROPULSÃO - Cadeira",0,10]],"87142000":[["3","XIII",1.0,"Partes e acessórios destinados exclusivamente a aplicação em cadeiras de rodas ou em outros veículos para defi",0,10]],"90214000":[["4","XIII",1.0,"Aparelhos para facilitar a audição dos surdos, exceto partes e acessórios",0,10]],"90219092":[["5","XIII",1.0,"Partes e acessórios de aparelhos para facilitar a audição dos surdos",0,10]],"30049069":[["1","XIV",1.0,"ABACAVIR",1,11],["2","XIV",1.0,"ABEMACICLIBE",1,11],["3","XIV",1.0,"ACALABRUTINIBE",1,11],["16","XIV",1.0,"ÁCIDO ZOLEDRÔNICO",1,11],["35","XIV",1.0,"ANASTROZOL",1,11],["39","XIV",1.0,"APALUTAMIDA",1,11],["49","XIV",1.0,"AXITINIBE",1,11],["53","XIV",1.0,"BENZONIDAZOL",1,11],["54","XIV",1.0,"BESILATO DE ANLODIPINO",1,11],["62","XIV",1.0,"BRIGATINIBE",1,11],["87","XIV",1.0,"CLOFAZIMINA",1,11],["93","XIV",1.0,"CLORIDRATO DE ALFENTANILA MONOIDRATADA",1,11],["109","XIV",1.0,"CLORIDRATO DE PALONOSETRONA",1,11],["112","XIV",1.0,"CLORIDRATO DE PONATINIBE",1,11],["116","XIV",1.0,"CRIZOTINIBE",1,11],["120","XIV",1.0,"DAROLUTAMIDA",1,11],["123","XIV",1.0,"DEFERASIROX",1,11],["128","XIV",1.0,"DICLORIDRATO DE DACLATASVIR",1,11],["131","XIV",1.0,"DICLORIDRATO DE SAPROPTERINA",1,11],["134","XIV",1.0,"DIFOSFATO DE CLOROQUINA",1,11],["136","XIV",1.0,"DIMETILSULFÓXIDO DE TRAMETINIBE",1,11],["145","XIV",1.0,"ELEXACAFTOR",1,11],["147","XIV",1.0,"ELTROMBOPAGUE OLAMINA",1,11],["156","XIV",1.0,"ENZALUTAMIDA",1,11],["157","XIV",1.0,"ERDAFITINIBE",1,11],["158","XIV",1.0,"ESILATO DE NINTEDANIBE",1,11],["162","XIV",1.0,"ETOMIDATO",1,11],["164","XIV",1.0,"ETRAVIRINA",1,11],["172","XIV",1.0,"FENTANILA",1,11],["174","XIV",1.0,"FLUORURACILA",1,11],["179","XIV",1.0,"FOSFATO DE RUXOLITINIBE",1,11],["180","XIV",1.0,"FOSFATO DE SITAGLIPTINA",1,11],["187","XIV",1.0,"GANCICLOVIR SÓDICO",1,11],["193","XIV",1.0,"HALOPERIDOL",1,11],["197","XIV",1.0,"IBRUTINIBE",1,11],["212","XIV",1.0,"IVACAFTOR",1,11],["215","XIV",1.0,"LEVETIRACETAM",1,11],["220","XIV",1.0,"LOSARTANA POTÁSSICA",1,11],["221","XIV",1.0,"LUMACAFTOR",1,11],["222","XIV",1.0,"MALEATO DE ACALABRUTINIBE MONOIDRATADO",1,11],["223","XIV",1.0,"MALEATO DE SUNITINIBE",1,11],["232","XIV",1.0,"MESILATO DE OSIMERTINIBE",1,11],["236","XIV",1.0,"METOTREXATO",1,11],["237","XIV",1.0,"METOTREXATO DE SÓDIO",1,11],["240","XIV",1.0,"MIDAZOLAM",1,11],["246","XIV",1.0,"NILOTINIBE",1,11],["247","XIV",1.0,"NITRENDIPINO",1,11],["252","XIV",1.0,"OLAPARIBE",1,11],["257","XIV",1.0,"PALBOCICLIBE",1,11],["266","XIV",1.0,"PEMETREXEDE DISSÓDICO",1,11],["267","XIV",1.0,"PEMETREXEDE DISSÓDICO HEMIPENTAIDRATADO",1,11],["268","XIV",1.0,"PEMETREXEDE DISSÓDICO HEPTAIDRATADO",1,11],["272","XIV",1.0,"PLERIXAFOR",1,11],["278","XIV",1.0,"RABEPRAZOL SÓDICO",1,11],["282","XIV",1.0,"REGORAFENIBE",1,11],["285","XIV",1.0,"RILUZOL",1,11],["287","XIV",1.0,"RISDIPLAM",1,11],["288","XIV",1.0,"RISPERIDONA",1,11],["291","XIV",1.0,"SACUBITRIL VALSARTANA SÓDICA HIDRATADA",1,11],["293","XIV",1.0,"SAXAGLIPTINA",1,11],["313","XIV",1.0,"SUCCINATO DE RIBOCICLIBE",1,11],["321","XIV",1.0,"SULFATO DE LAROTRECTINIBE",1,11],["329","XIV",1.0,"TARTARATO DE VARENICLINA",1,11],["339","XIV",1.0,"TEZACAFTOR",1,11],["343","XIV",1.0,"TOSILATO DE SORAFENIBE",1,11],["347","XIV",1.0,"UPADACITINIBE HEMI-HIDRATADO",1,11],["349","XIV",1.0,"VANDETANIBE",1,11]],"30043210":[["4","XIV",1.0,"ACEPONATO DE METILPREDNISOLONA",1,11],["274","XIV",1.0,"PREDNISOLONA",1,11],["314","XIV",1.0,"SUCCINATO SÓDICO DE HIDROCORTISONA",1,11]],"30043290":[["5","XIV",1.0,"ACETATO DE ABIRATERONA",1,11],["125","XIV",1.0,"DEXAMETASONA",1,11]],"30043939":[["6","XIV",1.0,"ACETATO DE CIPROTERONA",1,11],["161","XIV",1.0,"ETINILESTRADIOL + LEVONORGESTREL",1,11]],"30043929":[["7","XIV",1.0,"ACETATO DE DEGARELIX",1,11],["11","XIV",1.0,"ACETATO DE OCTREOTIDA",1,11],["13","XIV",1.0,"ACETATO DESMOPRESSINA",1,11],["29","XIV",1.0,"ALFATIROTROPINA",1,11],["126","XIV",1.0,"DIASPARTATO DE PASIREOTIDA",1,11],["259","XIV",1.0,"PAMOATO DE PASIREOTIDA",1,11],["298","XIV",1.0,"SOMATROPINA",1,11]],"30043927":[["8","XIV",1.0,"ACETATO DE GOSSERRELINA",1,11],["191","XIV",1.0,"GOSSERRELINA",1,11]],"30043919":[["9","XIV",1.0,"ACETATO DE LEUPRORRELINA",1,11]],"30043936":[["10","XIV",1.0,"ACETATO DE MEGESTROL",1,11],["182","XIV",1.0,"FULVESTRANTO",1,11]],"30043918":[["12","XIV",1.0,"ACETATO DE TRIPTORRELINA",1,11],["148","XIV",1.0,"EMBONATO DE TRIPTORRELINA",1,11],["346","XIV",1.0,"TRIPTORRELINA",1,11]],"30045090":[["14","XIV",1.0,"ÁCIDO FOLÍNICO (FÓLICO)",1,11],["111","XIV",1.0,"CLORIDRATO DE PIRIDOXINA",1,11],["211","XIV",1.0,"ISOTRETINOÍNA",1,11]],"30049039":[["15","XIV",1.0,"ÁCIDO TRANEXÂMICO",1,11],["94","XIV",1.0,"CLORIDRATO DE AMINOLEVULINATO DE METILA",1,11],["95","XIV",1.0,"CLORIDRATO DE CINACALCETE",1,11],["97","XIV",1.0,"CLORIDRATO DE DOBUTAMINA",1,11],["101","XIV",1.0,"CLORIDRATO DE FINGOLIMODE",1,11],["108","XIV",1.0,"CLORIDRATO DE MITOXANTRONA",1,11],["233","XIV",1.0,"MESILATO DE RASAGILINA",1,11],["275","XIV",1.0,"PREGABALINA",1,11],["312","XIV",1.0,"SUCCINATO DE METOPROLOL",1,11]],"30049029":[["17","XIV",1.0,"ACITRETINA",1,11],["38","XIV",1.0,"ANTIMONIAL PENTAVALENTE",1,11],["183","XIV",1.0,"FUMARATO DE DIMETILA",1,11]],"30021590":[["18","XIV",1.0,"AFLIBERCEPTE",1,11],["19","XIV",1.0,"ALBINTERFERONA ALFA-2B",1,11],["22","XIV",1.0,"ALENTUZUMABE",1,11],["26","XIV",1.0,"ALFAINTERFERONA",1,11],["28","XIV",1.0,"ALFAPEGINTERFERONA 2B",1,11],["47","XIV",1.0,"ATEZOLIZUMABE",1,11],["48","XIV",1.0,"AVELUMABE",1,11],["59","XIV",1.0,"BLINATUMOMABE",1,11],["61","XIV",1.0,"BRENTUXIMABE VEDOTINA",1,11],["77","XIV",1.0,"CETUXIMABE",1,11],["119","XIV",1.0,"DARATUMUMABE",1,11],["124","XIV",1.0,"DENOSUMABE",1,11],["142","XIV",1.0,"DURVALUMABE",1,11],["143","XIV",1.0,"ECULIZUMABE",1,11],["146","XIV",1.0,"ELOTUZUMABE",1,11],["149","XIV",1.0,"EMICIZUMABE",1,11],["173","XIV",1.0,"FILGRASTIM",1,11],["190","XIV",1.0,"GOLIMUMABE",1,11],["206","XIV",1.0,"INTERFERON ALFA-2A E INTERFERON ALFA-2B",1,11],["208","XIV",1.0,"IPILIMUMABE",1,11],["218","XIV",1.0,"LIPEGFILGRASTIM",1,11],["226","XIV",1.0,"MEPOLIZUMABE",1,11],["248","XIV",1.0,"NIVOLUMABE",1,11],["250","XIV",1.0,"OCRELIZUMABE",1,11],["253","XIV",1.0,"OLARATUMABE",1,11],["261","XIV",1.0,"PANITUMUMABE",1,11],["262","XIV",1.0,"PEG INTERFERON ALFA-2B",1,11],["265","XIV",1.0,"PEGFILGRASTIM",1,11],["269","XIV",1.0,"PERTUZUMABE",1,11],["280","XIV",1.0,"RAMUCIRUMABE",1,11],["286","XIV",1.0,"RISANQUIZUMABE",1,11],["294","XIV",1.0,"SECUQUINUMABE",1,11],["342","XIV",1.0,"TOCILIZUMABE",1,11],["350","XIV",1.0,"VEDOLIZUMABE",1,11]],"30021239":[["20","XIV",1.0,"ALBUMINA HUMANA",1,11],["25","XIV",1.0,"ALFAEPOETINA",1,11],["55","XIV",1.0,"BETAEPOETINA",1,11],["115","XIV",1.0,"COMPLEXO PROTROMBÍNICO PARCIALMENTE ATIVADO",1,11],["167","XIV",1.0,"FATOR IX DE COAGULAÇÃO",1,11],["168","XIV",1.0,"FATOR VII DE COAGULAÇÃO ATIVADO RECOMBINANTE",1,11],["169","XIV",1.0,"FATOR VIII DE COAGULAÇÃO",1,11],["170","XIV",1.0,"FATOR VIII DE COAGULAÇÃO CONTENDO FATOR DE VON WILLEBRAND",1,11],["171","XIV",1.0,"FATOR VIII DE COAGULAÇÃO RECOMBINANTE",1,11],["201","XIV",1.0,"IMUNOGLOBULINA ANTIRRÁBICA",1,11],["202","XIV",1.0,"IMUNOGLOBULINA ANTITETÂNICA",1,11],["203","XIV",1.0,"IMUNOGLOBULINA HUMANA ANTI-HEPATITE B",1,11]],"30049059":[["21","XIV",1.0,"ALENDRONATO DE SÓDIO",1,11],["34","XIV",1.0,"AMIFOSTINA",1,11],["57","XIV",1.0,"BICALUTAMIDA",1,11],["67","XIV",1.0,"CABAZITAXEL",1,11],["82","XIV",1.0,"CITRATO DE IXAZOMIBE",1,11],["118","XIV",1.0,"DAPAGLIFLOZINA",1,11],["138","XIV",1.0,"DOCETAXEL",1,11],["139","XIV",1.0,"DOCETAXEL TRI-HIDRATADO",1,11],["196","XIV",1.0,"IBANDRONATO SÓDIO",1,11],["234","XIV",1.0,"MESNA",1,11],["239","XIV",1.0,"MICOFENOLATO DE SÓDIO",1,11],["242","XIV",1.0,"MIFAMURTIDA",1,11],["256","XIV",1.0,"PACLITAXEL",1,11],["258","XIV",1.0,"PAMIDRONATO DISSÓDICO",1,11],["296","XIV",1.0,"SINVASTATINA",1,11]],"30049019":[["23","XIV",1.0,"ALFA-ALGLICOSIDASE",1,11],["24","XIV",1.0,"ALFAELOSULFASE",1,11],["30","XIV",1.0,"ALFAVESTRONIDASE",1,11],["32","XIV",1.0,"ALTEPLASE",1,11],["186","XIV",1.0,"GALSULFASE",1,11],["260","XIV",1.0,"PANCREATINA",1,11],["264","XIV",1.0,"PEGASPARGASE",1,11],["281","XIV",1.0,"RASBURICASE",1,11],["332","XIV",1.0,"TENECTEPLASE",1,11]],"30021510":[["27","XIV",1.0,"ALFAPEGINTERFERONA 2A",1,11],["263","XIV",1.0,"PEG INTERFERON ALFA-2A",1,11]],"30049079":[["31","XIV",1.0,"ALPELISIBE",1,11],["33","XIV",1.0,"AMBRISENTANA",1,11],["50","XIV",1.0,"AZACITIDINA",1,11],["52","XIV",1.0,"BARICITINIBE",1,11],["68","XIV",1.0,"CAPECITABINA",1,11],["71","XIV",1.0,"CARFILZOMIBE",1,11],["76","XIV",1.0,"CELECOXIBE",1,11],["78","XIV",1.0,"CICLOFOSFAMIDA",1,11],["81","XIV",1.0,"CITARABINA",1,11],["85","XIV",1.0,"CLADRIBINA",1,11],["92","XIV",1.0,"CLORIDRATO DE ALECTINIBE",1,11],["110","XIV",1.0,"CLORIDRATO DE PAZOPANIBE",1,11],["114","XIV",1.0,"CLORIDRATO DE ZIPRASIDONA MONOIDRATADO",1,11],["121","XIV",1.0,"DASATINIBE",1,11],["122","XIV",1.0,"DECITABINA",1,11],["129","XIV",1.0,"DICLORIDRATO DE PRAMIPEXOL MONOIDRATADO",1,11],["132","XIV",1.0,"DIDANOSINA",1,11],["135","XIV",1.0,"DIMALEATO DE AFATINIBE",1,11],["140","XIV",1.0,"DOLUTEGRAVIR SÓDICO",1,11],["160","XIV",1.0,"ESTAVUDINA",1,11],["188","XIV",1.0,"GEFITINIBE",1,11],["200","XIV",1.0,"IFOSFAMIDA",1,11],["213","XIV",1.0,"LAMIVUDINA + ZIDOVUDINA",1,11],["217","XIV",1.0,"LINEZOLIDA",1,11],["224","XIV",1.0,"MALEATO DE TIMOLOL",1,11],["228","XIV",1.0,"MESILATO DE DABRAFENIBE",1,11],["238","XIV",1.0,"MICOFENOLATO DE MOFETILA",1,11],["241","XIV",1.0,"MIDOSTAURINA",1,11],["249","XIV",1.0,"NUSINERSENA",1,11],["270","XIV",1.0,"PIOGLITAZONA",1,11],["283","XIV",1.0,"RIBAVIRINA",1,11],["295","XIV",1.0,"SELEXIPAGUE",1,11],["297","XIV",1.0,"SOFOSBUVIR",1,11],["327","XIV",1.0,"TAFAMIDIS MEGLUMINA",1,11],["337","XIV",1.0,"TERIZIDONA",1,11],["353","XIV",1.0,"VINFLUNINA",1,11],["356","XIV",1.0,"ZIDOVUDINA",1,11]],"30042099":[["36","XIV",1.0,"ANFOTERICINA B",1,11],["99","XIV",1.0,"CLORIDRATO DE EPIRRUBICINA",1,11],["141","XIV",1.0,"DOXICICLINA MONOIDRATADA",1,11],["338","XIV",1.0,"TETRACICLINA",1,11]],"30042095":[["37","XIV",1.0,"ANFOTERICINA B EM LIPOSSOMAS",1,11]],"30049078":[["40","XIV",1.0,"APREPITANTO",1,11],["102","XIV",1.0,"CLORIDRATO DE GENCITABINA",1,11],["144","XIV",1.0,"EFAVIRENZ",1,11],["150","XIV",1.0,"EMTRICITABINA",1,11],["154","XIV",1.0,"ENTRICITABINA",1,11],["155","XIV",1.0,"ENTRICITABINA + FUMARATO TENOFOVIR DESOPROXILA",1,11],["163","XIV",1.0,"ETOPOSIDEO",1,11],["165","XIV",1.0,"EVEROLIMO",1,11],["176","XIV",1.0,"FOSAMPRENAVIR CÁLCICO",1,11],["177","XIV",1.0,"FOSFATO DE FLUDARABINA",1,11],["289","XIV",1.0,"RITONAVIR",1,11],["326","XIV",1.0,"TACROLIMO",1,11],["333","XIV",1.0,"TENIPOSIDEO",1,11],["335","XIV",1.0,"TENSIROLIMO",1,11],["341","XIV",1.0,"TIPRANAVIR",1,11]],"30046000":[["41","XIV",1.0,"ARTEMÉTER",1,11],["42","XIV",1.0,"ARTEMÉTER + LUMEFANTRINA",1,11],["43","XIV",1.0,"ARTESUNATO + CLORIDRATO MEFLOQUINA",1,11],["44","XIV",1.0,"ARTESUNATO DE SÓDIO",1,11]],"30049012":[["45","XIV",1.0,"ASPARAGINASE",1,11]],"30049042":[["46","XIV",1.0,"ATENOLOL",1,11]],"30049066":[["51","XIV",1.0,"AZATIOPRINA",1,11]],"30021520":[["56","XIV",1.0,"BEVACIZUMABE",1,11],["290","XIV",1.0,"RITUXIMABE",1,11],["344","XIV",1.0,"TRASTUZUMABE",1,11]],"30049068":[["60","XIV",1.0,"BORTEZOMIBE",1,11],["100","XIV",1.0,"CLORIDRATO DE ERLOTINIBE",1,11],["117","XIV",1.0,"DACARBAZINA",1,11],["153","XIV",1.0,"ENFUVIRTIDA",1,11],["184","XIV",1.0,"FUMARATO DE TENOFOVIR DESOPROXILA",1,11],["214","XIV",1.0,"LETROZOL",1,11],["219","XIV",1.0,"LOPINAVIR + RITONAVIR",1,11],["230","XIV",1.0,"MESILATO DE IMATINIBE",1,11],["231","XIV",1.0,"MESILATO DE NELFINAVIR",1,11],["245","XIV",1.0,"NEVIRAPINA",1,11],["292","XIV",1.0,"SAQUINAVIR",1,11],["317","XIV",1.0,"SULFATO DE ABACAVIR",1,11],["318","XIV",1.0,"SULFATO DE ATAZANAVIR",1,11],["320","XIV",1.0,"SULFATO DE INDINAVIR",1,11],["331","XIV",1.0,"TEMOZOLOMIDA",1,11],["334","XIV",1.0,"TENOFOVIR",1,11],["340","XIV",1.0,"TIOGUANINA",1,11],["355","XIV",1.0,"ZIAGENAVIR",1,11]],"30044990":[["63","XIV",1.0,"BROMETO DE IPRATRÓPIO",1,11],["103","XIV",1.0,"CLORIDRATO DE GRANISSETRONA",1,11],["105","XIV",1.0,"CLORIDRATO DE IRINOTECANO",1,11],["106","XIV",1.0,"CLORIDRATO DE IRINOTECANO TRI-HIDRATADO",1,11],["130","XIV",1.0,"DICLORIDRATO DE QUININA",1,11],["137","XIV",1.0,"DITARTARATO DE VINORELBINA",1,11],["277","XIV",1.0,"QUININA",1,11],["322","XIV",1.0,"SULFATO DE MORFINA",1,11],["323","XIV",1.0,"SULFATO DE MORFINA PENTAIDRATADO",1,11],["324","XIV",1.0,"SULFATO DE QUININA",1,11],["330","XIV",1.0,"TARTARATO DE VINORELBINA",1,11],["354","XIV",1.0,"VINORELBINA",1,11]],"30043999":[["64","XIV",1.0,"BUDESONIDA",1,11]],"30021580":[["65","XIV",1.0,"BUROSUMABE",1,11]],"30049095":[["66","XIV",1.0,"BUSSULFANO",1,11],["133","XIV",1.0,"DIETILESTILBESTROL",1,11],["244","XIV",1.0,"MITOTANO",1,11],["276","XIV",1.0,"PROPOFOL",1,11]],"30049035":[["69","XIV",1.0,"CARBIDOPA + LEVODOPA",1,11]],"30049048":[["72","XIV",1.0,"CARMUSTINA",1,11],["229","XIV",1.0,"MESILATO DE DESFERROXAMINA",1,11]],"30042059":[["73","XIV",1.0,"CEFALOTINA",1,11],["74","XIV",1.0,"CEFOXITINA",1,11],["75","XIV",1.0,"CEFTAZIDIMA",1,11]],"30042094":[["79","XIV",1.0,"CILASTATINA SÓDICA + IMIPENEM",1,11]],"30049034":[["84","XIV",1.0,"CITRATO DE TAMOXIFENO",1,11],["328","XIV",1.0,"TAMOXIFENO",1,11]],"30049058":[["86","XIV",1.0,"CLODRONATO DISSÓDICO",1,11],["181","XIV",1.0,"FOTEMUSTINA",1,11]],"30049038":[["88","XIV",1.0,"CLORAMBUCILA",1,11]],"28444200":[["89","XIV",1.0,"CLORETO DE RÁDIO (223 RA)",1,11]],"30042069":[["96","XIV",1.0,"CLORIDRATO DE DAUNORRUBICINA",1,11],["98","XIV",1.0,"CLORIDRATO DE DOXORRUBICINA",1,11],["104","XIV",1.0,"CLORIDRATO DE IDARRUBICINA",1,11]],"30049041":[["107","XIV",1.0,"CLORIDRATO DE METOCLOPRAMIDA",1,11]],"30044910":[["113","XIV",1.0,"CLORIDRATO DE TOPOTECANA",1,11],["325","XIV",1.0,"SULFATO DE VINCRISTINA",1,11],["351","XIV",1.0,"VIMBLASTINA",1,11],["352","XIV",1.0,"VINCRISTINA",1,11]],"30049064":[["127","XIV",1.0,"DIAZEPAM",1,11]],"30043039":[["151","XIV",1.0,"ENANTATO DE NORETISTERONA + VALERATO DE ESTRADIOL",1,11]],"30043220":[["159","XIV",1.0,"ESPIRONOLACTONA",1,11]],"30043994":[["166","XIV",1.0,"EXEMESTANO",1,11]],"30045010":[["175","XIV",1.0,"FOLINATO DE CÁLCIO",1,11]],"30049049":[["178","XIV",1.0,"FOSFATO DE OSELTAMIVIR",1,11],["225","XIV",1.0,"MARAVIROQUE",1,11],["279","XIV",1.0,"RALTEGRAVIR",1,11],["336","XIV",1.0,"TERIFLUNOMIDA",1,11]],"30049076":[["185","XIV",1.0,"FUROSEMIDA",1,11]],"30044950":[["192","XIV",1.0,"GRANISETRON",1,11]],"30042063":[["198","XIV",1.0,"IDARRUBICINA",1,11]],"30049014":[["199","XIV",1.0,"IDURSULFASE",1,11]],"30043100":[["204","XIV",1.0,"INSULINA GLARGINA",1,11],["205","XIV",1.0,"INSULINA HUMANA",1,11]],"30063013":[["207","XIV",1.0,"IOPAMIDOL",1,11]],"30049047":[["209","XIV",1.0,"ISETIONATO DE PENTAMIDINA",1,11]],"30049043":[["216","XIV",1.0,"LIDOCAÍNA",1,11]],"30049063":[["227","XIV",1.0,"MERCAPTOPURINA",1,11],["273","XIV",1.0,"PRAZIQUANTEL",1,11]],"30042091":[["243","XIV",1.0,"MITOMICINA",1,11]],"30043926":[["251","XIV",1.0,"OCTREOTIDA",1,11]],"30022032":[["271","XIV",1.0,"PIRAZINAMIDA + RIFAMPICINA + CLORIDRATO DE ETAMBUTOL + ISONIAZIDA",1,11]],"30042032":[["284","XIV",1.0,"RIFAMPICINA + ISONIAZIDA",1,11]],"30021211":[["299","XIV",1.0,"SORO ANTIARACNÍDICO (LOXOSCELES, PHONEUTRIA E TITYUS)",1,11],["300","XIV",1.0,"SORO ANTIBOTRÓPICO (PENTAVALENTE)",1,11],["301","XIV",1.0,"SORO ANTIBOTRÓPICO (PENTAVALENTE) E ANTICROTÁLICO",1,11],["302","XIV",1.0,"SORO ANTIBOTRÓPICO (PENTAVALENTE) E ANTILAQUÉTICO",1,11],["304","XIV",1.0,"SORO ANTICROTÁLICO",1,11],["306","XIV",1.0,"SORO ANTIELAPÍDICO (BIVALENTE)",1,11],["307","XIV",1.0,"SORO ANTIESCORPIÔNICO",1,11],["308","XIV",1.0,"SORO ANTILONÔMICO",1,11],["309","XIV",1.0,"SORO ANTILOXOSCÉLICO (TRIVALENTE)",1,11]],"30021219":[["303","XIV",1.0,"SORO ANTIBOTULÍNICO AB (BIVALENTE)",1,11],["310","XIV",1.0,"SORO ANTIRRÁBICO",1,11]],"30021215":[["305","XIV",1.0,"SORO ANTIDIFTÉRICO",1,11]],"30021212":[["311","XIV",1.0,"SORO ANTITETÂNICO",1,11]],"30049072":[["315","XIV",1.0,"SULFADIAZINA",1,11],["316","XIV",1.0,"SULFAMETOXAZOL + TRIMETROPINA",1,11]],"30042093":[["319","XIV",1.0,"SULFATO DE BLEOMICINA",1,11]],"30042071":[["348","XIV",1.0,"VANCOMICINA",1,11]],"30024129":[["357","XIV",1.0,"VACINA ADSORVIDA DIFTERIA E TÉTANO",1,11],["360","XIV",1.0,"VACINA ADSORVIDA DIFTERIA, TÉTANO, PERTUSSIS, HEPATITE B (RECOMBINANTE) E HAEMOPHILUS INFLUENZAE B (CONJUGADA)",1,11],["361","XIV",1.0,"VACINA ADSORVIDA HEPATITE A (INATIVADA)",1,11],["362","XIV",1.0,"VACINA BCG",1,11],["363","XIV",1.0,"VACINA CÓLERA (INATIVADA)",1,11],["364","XIV",1.0,"VACINA COVID-19",1,11],["365","XIV",1.0,"VACINA DENGUE 1, 2, 3 E 4",1,11],["366","XIV",1.0,"VACINA FEBRE AMARELA (ATENUADA)",1,11],["367","XIV",1.0,"VACINA FEBRE TIFÓIDE (POLISSACARÍDICA)",1,11],["368","XIV",1.0,"VACINA HAEMOPHILUS INFLUENZAE B (CONJUGADA)",1,11],["373","XIV",1.0,"VACINA PAPILOMAVÍRUS HUMANO 6, 11, 16 E 18 (RECOMBINANTE)",1,11],["374","XIV",1.0,"VACINA PNEUMOCÓCICA 10-VALENTE (CONJUGADA)",1,11],["375","XIV",1.0,"VACINA PNEUMOCÓCICA 13-VALENTE (CONJUGADA)",1,11],["376","XIV",1.0,"VACINA PNEUMOCÓCICA 23-VALENTE (POLISSACARÍDICA)",1,11],["379","XIV",1.0,"VACINA RAIVA (INATIVADA)",1,11],["380","XIV",1.0,"VACINA ROTAVÍRUS HUMANO G1P 8 (ATENUADA)",1,11],["382","XIV",1.0,"VACINA SARAMPO, CAXUMBA, RUBÉOLA E VARICELA (ATENUADA)",1,11],["383","XIV",1.0,"VACINA VARICELA (ATENUADA)",1,11]],"30024127":[["358","XIV",1.0,"VACINA ADSORVIDA DIFTERIA, TÉTANO E PERTUSSIS",1,11],["359","XIV",1.0,"VACINA ADSORVIDA DIFTERIA, TÉTANO E PERTUSSIS (ACELULAR)",1,11],["381","XIV",1.0,"VACINA SARAMPO, CAXUMBA, RUBÉOLA",1,11]],"30024123":[["369","XIV",1.0,"VACINA HEPATITE B (RECOMBINANTE)",1,11]],"30024121":[["370","XIV",1.0,"VACINA INFLUENZA TRIVALENTE (FRAGMENTADA, INATIVADA)",1,11]],"30024125":[["371","XIV",1.0,"VACINA MENINGOCÓCICA ACWY (CONJUGADA)",1,11],["372","XIV",1.0,"VACINA MENINGOCÓCICA C (CONJUGADA)",1,11]],"30024122":[["377","XIV",1.0,"VACINA POLIOMIELITE 1 E 3 (ATENUADA)",1,11],["378","XIV",1.0,"VACINA POLIOMIELITE 1, 2 E 3 (INATIVADA)",1,11]],"04072":[["1","XV",1.0,"Ovos da subposição 0407.2 da NCM/SH",0,12]],"0701":[["2","XV",1.0,"Produtos hortícolas das posições 07.01, 07.02.00.00, 07.03, 07.04, 07.05, 07.06, 0707.00.00, 07.08, 07.09 e 07",0,12]],"07020000":[["2","XV",1.0,"Produtos hortícolas das posições 07.01, 07.02.00.00, 07.03, 07.04, 07.05, 07.06, 0707.00.00, 07.08, 07.09 e 07",0,12]],"0703":[["2","XV",1.0,"Produtos hortícolas das posições 07.01, 07.02.00.00, 07.03, 07.04, 07.05, 07.06, 0707.00.00, 07.08, 07.09 e 07",0,12]],"0704":[["2","XV",1.0,"Produtos hortícolas das posições 07.01, 07.02.00.00, 07.03, 07.04, 07.05, 07.06, 0707.00.00, 07.08, 07.09 e 07",0,12]],"0705":[["2","XV",1.0,"Produtos hortícolas das posições 07.01, 07.02.00.00, 07.03, 07.04, 07.05, 07.06, 0707.00.00, 07.08, 07.09 e 07",0,12]],"0706":[["2","XV",1.0,"Produtos hortícolas das posições 07.01, 07.02.00.00, 07.03, 07.04, 07.05, 07.06, 0707.00.00, 07.08, 07.09 e 07",0,12]],"07070000":[["2","XV",1.0,"Produtos hortícolas das posições 07.01, 07.02.00.00, 07.03, 07.04, 07.05, 07.06, 0707.00.00, 07.08, 07.09 e 07",0,12]],"0708":[["2","XV",1.0,"Produtos hortícolas das posições 07.01, 07.02.00.00, 07.03, 07.04, 07.05, 07.06, 0707.00.00, 07.08, 07.09 e 07",0,12]],"0709":[["2","XV",1.0,"Produtos hortícolas das posições 07.01, 07.02.00.00, 07.03, 07.04, 07.05, 07.06, 0707.00.00, 07.08, 07.09 e 07",0,12]],"0710":[["2","XV",1.0,"Produtos hortícolas das posições 07.01, 07.02.00.00, 07.03, 07.04, 07.05, 07.06, 0707.00.00, 07.08, 07.09 e 07",0,12]],"07095":[["2","XV",1.0,"Produtos hortícolas das posições 07.01, 07.02.00.00, 07.03, 07.04, 07.05, 07.06, 0707.00.00, 07.08, 07.09 e 07",0,12]],"07108000":[["2","XV",1.0,"Produtos hortícolas das posições 07.01, 07.02.00.00, 07.03, 07.04, 07.05, 07.06, 0707.00.00, 07.08, 07.09 e 07",0,12]],"0803":[["3","XV",1.0,"Frutas frescas ou refrigeradas e frutas congeladas sem adição de açúcar ou de outros edulcorantes classificada",0,12]],"0804":[["3","XV",1.0,"Frutas frescas ou refrigeradas e frutas congeladas sem adição de açúcar ou de outros edulcorantes classificada",0,12]],"0805":[["3","XV",1.0,"Frutas frescas ou refrigeradas e frutas congeladas sem adição de açúcar ou de outros edulcorantes classificada",0,12]],"0806":[["3","XV",1.0,"Frutas frescas ou refrigeradas e frutas congeladas sem adição de açúcar ou de outros edulcorantes classificada",0,12]],"0807":[["3","XV",1.0,"Frutas frescas ou refrigeradas e frutas congeladas sem adição de açúcar ou de outros edulcorantes classificada",0,12]],"0808":[["3","XV",1.0,"Frutas frescas ou refrigeradas e frutas congeladas sem adição de açúcar ou de outros edulcorantes classificada",0,12]],"0809":[["3","XV",1.0,"Frutas frescas ou refrigeradas e frutas congeladas sem adição de açúcar ou de outros edulcorantes classificada",0,12]],"0810":[["3","XV",1.0,"Frutas frescas ou refrigeradas e frutas congeladas sem adição de açúcar ou de outros edulcorantes classificada",0,12]],"0811":[["3","XV",1.0,"Frutas frescas ou refrigeradas e frutas congeladas sem adição de açúcar ou de outros edulcorantes classificada",0,12]],"0714":[["5","XV",1.0,"Raízes e tubérculos da posição 07.14 da NCM/SH",0,12]],"08011":[["6","XV",1.0,"Cocos da subposição 0801.1 da NCM/SH",0,12]]};
+/* ===== tabelas do Simples (LC 123/2006, Anexos I e II) ===== */
+const TAB={
+ I:[[.040,0],[.073,5940],[.095,13860],[.107,22500],[.143,87300],[.190,378000]],
+ II:[[.045,0],[.078,5940],[.100,13860],[.112,22500],[.147,85500],[.300,720000]]
+};
+/* partilha: IRPJ, CSLL, COFINS, PIS, CPP, IPI, ICMS */
+const PART={
+ I:[[5.5,3.5,12.74,2.76,41.5,0,34],[5.5,3.5,12.74,2.76,41.5,0,34],[5.5,3.5,12.74,2.76,42,0,33.5],
+    [5.5,3.5,12.74,2.76,42,0,33.5],[5.5,3.5,12.74,2.76,42,0,33.5],[13.5,10,28.27,6.13,42.1,0,0]],
+ II:[[5.5,3.5,11.51,2.49,37.5,7.5,32],[5.5,3.5,11.51,2.49,37.5,7.5,32],[5.5,3.5,11.51,2.49,37.5,7.5,32],
+    [5.5,3.5,11.51,2.49,37.5,7.5,32],[5.5,3.5,11.51,2.49,37.5,7.5,32],[8.5,7.5,20.96,4.54,23.5,35,0]]
+};
+const LIM=[180000,360000,720000,1800000,3600000,4800000];
+const ROT=["IRPJ","CSLL","COFINS","PIS/Pasep","INSS/CPP","IPI","ICMS"];
+const COR=["var(--s1)","var(--s5)","var(--s2)","var(--s4)","var(--s3)","var(--ink-3)","var(--brand-2)"];
+
+/* ===== utilitários ===== */
+const $=function(i){return document.getElementById(i)};
+const brl=function(v){if(!isFinite(v))v=0;return (v<0?"−":"")+"R$ "+Math.abs(v).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})};
+const brlc=function(v){if(!isFinite(v))v=0;return (v<0?"−":"")+Math.abs(v).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})};
+const pct=function(v,d){if(!isFinite(v))v=0;d=d===undefined?2:d;return (v*100).toLocaleString("pt-BR",{minimumFractionDigits:d,maximumFractionDigits:d})+"%"};
+const num=function(s){if(typeof s==="number")return isFinite(s)?s:0;
+  var t=String(s==null?"":s).replace(/[^\d,.\-]/g,"");if(!t)return 0;
+  if(t.indexOf(",")>=0&&t.lastIndexOf(",")>t.lastIndexOf("."))t=t.replace(/\./g,"").replace(",",".");
+  else t=t.replace(/,/g,"");var n=parseFloat(t);return isFinite(n)?n:0};
+const esc=function(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})};
+const norm=function(s){return String(s==null?"":s).normalize("NFD").replace(/[̀-ͯ]/g,"").toUpperCase().replace(/[^A-Z0-9 ]+/g," ").replace(/\s+/g," ").trim()};
+const soDig=function(s){return String(s==null?"":s).replace(/\D+/g,"")};
+const STOP={DE:1,DA:1,DO:1,COM:1,PARA:1,EM:1,UN:1,CX:1,PC:1,P:1};
+function radical(t){
+  if(t.length>4&&/OES$/.test(t))return t.slice(0,-3)+"AO";
+  if(t.length>4&&/AIS$/.test(t))return t.slice(0,-3)+"AL";
+  if(t.length>3&&/(RES|SES|ZES|LES)$/.test(t))return t.slice(0,-2);
+  if(t.length>3&&/S$/.test(t)&&!/SS$/.test(t))return t.slice(0,-1);
+  return t}
+function tokens(s){return norm(s).split(" ").filter(function(t){return t.length>1&&!STOP[t]}).map(radical)}
+
+/* ===== enquadramento do produto na LC 214 =====
+   Mesmo motor do Motor de Evidencias: descida de prefixo na NCM, teste duplo por
+   aderencia da descricao ao texto do anexo, desempate pelo beneficio mais forte,
+   alternativas e marca de indefinido quando a NCM cobre varios itens sem nenhuma
+   palavra em comum. */
+const FORCA_BENEF={1:3,0.6:2};
+
+function segmentos(literal,tkLei){
+  var partes=String(literal||"").split(/[;,]| ou | exceto | ressalvad\w*/i),segs=[];
+  for(var i=0;i<partes.length;i++){
+    if(partes[i].trim().length<3)continue;
+    var t=tokens(partes[i]);if(t.length)segs.push(t)}
+  return segs.length?segs:[tkLei]}
+
+function aderencia(tkProd,tkLei,literal){
+  if(!tkProd.length||!tkLei.length)return 0;
+  var set={},i;
+  for(i=0;i<tkProd.length;i++)set[tkProd[i]]=1;
+  var segs=segmentos(literal,tkLei),cov=0;
+  for(var k=0;k<segs.length;k++){
+    var vistos={},unicos=0,inter=0;
+    for(i=0;i<segs[k].length;i++){var t=segs[k][i];if(vistos[t])continue;vistos[t]=1;unicos++;if(set[t])inter++}
+    if(unicos)cov=Math.max(cov,inter/unicos)}
+  var lei={};for(i=0;i<tkLei.length;i++)lei[tkLei[i]]=1;
+  var cabeca=(tkProd.length&&lei[tkProd[0]])?1:0;
+  return Math.max(cov,0.6*cabeca+0.4*cov)}
+
+var _tokCache={};
+function tokLei(lit){var k=lit||"";if(!_tokCache[k])_tokCache[k]=tokens(k);return _tokCache[k]}
+
+function acharLC(ncm,tk){
+  var d=soDig(ncm),cands=null,i;
+  if(d.length<4)return null;
+  for(var L=d.length;L>=4&&!cands;L--){var k=d.slice(0,L);if(LC214[k])cands=LC214[k]}
+  if(!cands||!cands.length)return null;
+  var melhor=null,ms=-1,msc=0;
+  for(i=0;i<cands.length;i++){
+    var c=cands[i],tl=tokLei(c[3]);
+    var sc=(tk&&tk.length&&tl.length)?aderencia(tk,tl,c[3]):0;
+    var peso=sc*100+(FORCA_BENEF[c[2]]||0);
+    if(peso>ms){ms=peso;melhor=c;msc=sc}}
+  var outros=[];
+  for(i=0;i<cands.length;i++)
+    if(cands[i]!==melhor&&cands[i][1]!==melhor[1])
+      outros.push("Anexo "+cands[i][1]+" item "+cands[i][0]);
+  return {item:melhor[0],anexo:melhor[1],red:melhor[2],literal:melhor[3],
+          exigeAnvisa:!!melhor[4],hipotese:HIP[melhor[5]]||"",
+          score:msc,alternativas:outros,indefinido:(!msc&&cands.length>1),quantos:cands.length}}
+
+/* Art. 133: medicamento registrado na Anvisa tem reducao de 60% sem constar de
+   anexo nenhum - e hipotese por regra, nao por lista. */
+function enquadrar(ncm,desc){
+  var tk=tokens(desc),lc=acharLC(ncm,tk);
+  if(lc)return lc;
+  if(/^300[34]/.test(soDig(ncm)))
+    return {item:"",anexo:"-",red:0.6,literal:"",exigeAnvisa:true,
+      hipotese:"Medicamento registrado na Anvisa (art. 133) - independe de anexo",
+      score:1,alternativas:[],indefinido:false,quantos:1,art133:true};
+  return null}
+
+function forcaTxt(s){return s>=0.50?"alta":(s>=0.25?"média":"baixa")}
+
+/* ===== leitura do CSV de movimentação ===== */
+function parseCsv(t,sep){
+  var out=[],row=[],cur="",q=false,i=0;t=String(t).replace(/^﻿/,"");
+  while(i<t.length){var c=t[i];
+    if(q){if(c==='"'){if(t[i+1]==='"'){cur+='"';i++}else q=false}else cur+=c}
+    else if(c==='"')q=true;
+    else if(c===sep){row.push(cur);cur=""}
+    else if(c==="\n"){row.push(cur);out.push(row);row=[];cur=""}
+    else if(c!=="\r")cur+=c;
+    i++}
+  if(cur||row.length){row.push(cur);out.push(row)}
+  return out}
+
+const DEVOL=/^(1|2|5|6)(201|202|410|411|553|556|918|919|920|921)$/;
+
+function lerMovimentacao(texto){
+  var m=parseCsv(texto,";"),hi=-1,i;
+  for(i=0;i<m.length&&i<40;i++){if(String(m[i][0]||"").trim()==="Tipo"){hi=i;break}}
+  if(hi<0)throw new Error("não achei a linha de cabeçalho (coluna Tipo) — confirme se é o relatório de Movimentação Fiscal");
+  var cab=m[hi],idx={};
+  for(i=0;i<cab.length;i++){var c=norm(cab[i]);
+    if(!c)continue;
+    if(/^TIPO$/.test(c))idx.tipo=i;
+    else if(/NOME EMIT/.test(c))idx.nome=i;
+    else if(/^NF$/.test(c))idx.nf=i;
+    else if(/^CFOP$/.test(c))idx.cfop=i;
+    else if(/CODIGO PROD/.test(c))idx.cod=i;
+    else if(/DESCRICAO ITEM/.test(c))idx.desc=i;
+    else if(/^NCM$/.test(c))idx.ncm=i;
+    else if(/^QUANTIDADE$/.test(c))idx.qtd=i;
+    else if(/VALOR TOTAL/.test(c))idx.total=i}
+  if(idx.total===undefined||idx.ncm===undefined)
+    throw new Error("o arquivo não tem as colunas NCM e Valor total");
+  var emp="",per="",itens=[];
+  for(i=0;i<hi;i++){var lin=m[i].join(" ");
+    var e=lin.match(/Empresa:\s*(.+?)\s{2,}/);if(e&&!emp)emp=e[1].trim();
+    var p=lin.match(/de\s*(\d{2}\/\d{2}\/\d{4})\s*at[ée]\s*(\d{2}\/\d{2}\/\d{4})/);if(p&&!per)per=p[1]+" a "+p[2]}
+  for(i=hi+1;i<m.length;i++){
+    var r=m[i],t=norm(r[idx.tipo]||"");
+    if(t!=="ENTRADA"&&t!=="SAIDA")continue;
+    var cfop=soDig(r[idx.cfop]||""),total=num(r[idx.total]);
+    if(!total)continue;
+    itens.push({tipo:t==="SAIDA"?"S":"E",cfop:cfop,devolucao:DEVOL.test(cfop),
+      nome:String(r[idx.nome]||"").trim(),cod:String(r[idx.cod]||"").trim(),
+      desc:String(r[idx.desc]||"").trim(),ncm:soDig(r[idx.ncm]||""),
+      qtd:num(r[idx.qtd]),total:total})}
+  if(!itens.length)throw new Error("nenhuma linha de entrada ou saída encontrada");
+  return {empresa:emp,periodo:per,itens:itens}}
+
+/* ===== leitura do extrato do PGDAS-D ===== */
+function lerExtrato(txt){
+  var t=String(txt).replace(/\s+/g," ");
+  function n1(re){var m=t.match(re);return m?num(m[1]):0}
+  var o={};
+  var e=t.match(/Nome Empresarial:\s*([^|]+?)\s+(?:Data de Abertura|CNPJ|Regime)/i);
+  o.empresa=e?e[1].trim():"";
+  var c=t.match(/CNPJ\s*B[áa]sico:\s*([\d.\/-]+)/i);o.cnpj=c?c[1]:"";
+  var p=t.match(/Per[íi]odo de Apura[çc][ãa]o \(PA\):\s*(\d{2}\/\d{4})/i);o.pa=p?p[1]:"";
+  o.rpa=n1(/\(RPA\)[^\d]{0,40}([\d.]+,\d{2})/i);
+  o.rbt12=n1(/\(RBT12\)\s*([\d.]+,\d{2})/i);
+  o.rbt12p=n1(/\(RBT12p\)\s*([\d.]+,\d{2})/i);
+  /* A empresa pode ter varios estabelecimentos, cada um com sua grade. O que
+     importa e o Total Geral da Empresa - o DAS e um so. */
+  var GRADE=/IRPJ\s+CSLL\s+COFINS\s+PIS\/Pasep\s+INSS\/CPP\s+ICMS\s+IPI\s+ISS\s+Total\s+((?:[\d.]+,\d{2}\s+){8}[\d.]+,\d{2})/ig;
+  var geral=t.match(/Total Geral da Empresa[\s\S]{0,1200}/i),alvo=geral?geral[0]:t,g=null,m2;
+  var re=new RegExp(GRADE.source,"i");
+  m2=alvo.match(re);
+  if(!m2&&geral)m2=t.match(re);
+  if(m2){var v=m2[1].trim().split(/\s+/).map(num);
+    o.irpj=v[0];o.csll=v[1];o.cofins=v[2];o.pis=v[3];o.cpp=v[4];o.icms=v[5];o.ipi=v[6];o.iss=v[7];o.das=v[8]}
+  /* confere pelo bloco do DAS gerado, que traz o valor final */
+  var pr=t.match(/Principal\s+([\d.]+,\d{2})/i);if(pr&&num(pr[1])>0)o.dasGerado=num(pr[1]);
+  o.estabelecimentos=(t.match(/CNPJ Estabelecimento:/gi)||[]).length;
+  o.anexo=/Revenda de mercadorias/i.test(t)?"I":(/Venda de mercadorias industrializadas/i.test(t)?"II":"");
+  return o}
+
+async function lerPdf(file){
+  var buf=await file.arrayBuffer();
+  var doc=await pdfjsLib.getDocument({data:buf}).promise,out="";
+  for(var i=1;i<=doc.numPages;i++){
+    var pg=await doc.getPage(i),tc=await pg.getTextContent();
+    out+=tc.items.map(function(x){return x.str}).join(" ")+" "}
+  return out}
+
+function lerArquivoTexto(file){
+  return new Promise(function(res,rej){
+    var fr=new FileReader();
+    fr.onload=function(){var t=fr.result;
+      if(t.indexOf(String.fromCharCode(65533))>=0){var fr2=new FileReader();
+        fr2.onload=function(){res(fr2.result)};fr2.onerror=rej;fr2.readAsText(file,"windows-1252")}
+      else res(t)};
+    fr.onerror=rej;fr.readAsText(file,"utf-8")})}
+
+
+/* ===== XMLs de NF-e e NFC-e =====
+   Le o pacote inteiro: NFC-e (modelo 65) e NF-e (modelo 55), saidas e entradas,
+   itens com NCM e o regime do fornecedor. O CRT do emitente diz o regime: 1 e 2
+   sao Simples Nacional, 3 e regime normal, 4 e MEI - so o regime normal destaca
+   CBS e gera credito. Notas canceladas (eventos 110111 e 110112) saem da conta,
+   e a devolucao de venda entra como saida negativa: foi assim que o total bateu
+   ao centavo com a receita declarada no PGDAS-D. */
+function tag1(s,t){var m=s.match(new RegExp("<"+t+"[^>]*>([^<]*)</"+t+">"));return m?m[1].trim():""}
+
+function lerDocXml(t){
+  var ev=t.match(/<tpEvento>(\d+)<\/tpEvento>/);
+  if(ev){
+    if(/^11011[12]$/.test(ev[1])){var c=t.match(/<chNFe>(\d+)<\/chNFe>/);
+      if(c)return {cancel:c[1]}}
+    return null}
+  var inf=t.match(/<infNFe[^>]*Id="NFe(\d+)"[\s\S]*?<\/infNFe>/);
+  if(!inf)return null;
+  var b=inf[0],chave=inf[1];
+  var emitB=(b.match(/<emit>[\s\S]*?<\/emit>/)||[""])[0];
+  var destB=(b.match(/<dest>[\s\S]*?<\/dest>/)||[""])[0];
+  var tot=(b.match(/<ICMSTot>[\s\S]*?<\/ICMSTot>/)||[""])[0];
+  var dets=b.match(/<det [\s\S]*?<\/det>/g)||[],itens=[];
+  for(var i=0;i<dets.length;i++){
+    var pr=(dets[i].match(/<prod>[\s\S]*?<\/prod>/)||[""])[0];
+    if(!pr)continue;
+    itens.push({ncm:soDig(tag1(pr,"NCM")),desc:tag1(pr,"xProd"),cfop:soDig(tag1(pr,"CFOP")),
+      total:(parseFloat(tag1(pr,"vProd"))||0)-(parseFloat(tag1(pr,"vDesc"))||0)})}
+  return {chave:chave,mod:soDig(tag1(b,"mod")),tpNF:tag1(b,"tpNF"),fin:tag1(b,"finNFe"),
+    emit:soDig(tag1(emitB,"CNPJ")),emitNome:tag1(emitB,"xNome")||tag1(emitB,"xFant"),
+    crt:soDig(tag1(emitB,"CRT")),dest:soDig(tag1(destB,"CNPJ")||tag1(destB,"CPF")),
+    vNF:parseFloat(tag1(tot,"vNF"))||0,itens:itens}}
+
+function regimeDe(crt){
+  if(crt==="3")return "normal";
+  if(crt==="1"||crt==="2")return "simples";
+  if(crt==="4")return "mei";
+  return "indefinido"}
+var ROTREG={normal:"regime normal",simples:"Simples Nacional",mei:"MEI",indefinido:"não identificado"};
+
+async function lerPacoteXml(files){
+  var textos=[],i;
+  for(i=0;i<files.length;i++){
+    var f=files[i];
+    if(/\.zip$/i.test(f.name)){
+      var zip=await JSZip.loadAsync(f),nomes=Object.keys(zip.files);
+      for(var k=0;k<nomes.length;k++){
+        var z=zip.files[nomes[k]];
+        if(z.dir||!/\.xml$/i.test(nomes[k]))continue;
+        textos.push(await z.async("string"))}
+    }else textos.push(await f.text())}
+  var canc={},notas=[];
+  for(i=0;i<textos.length;i++){
+    var d=lerDocXml(textos[i]);if(!d)continue;
+    if(d.cancel){canc[d.cancel]=1;continue}
+    notas.push(d)}
+  var vivas=notas.filter(function(n){return !canc[n.chave]});
+  if(!vivas.length)throw new Error("nenhuma NF-e ou NFC-e válida nos arquivos");
+  var freq={};vivas.forEach(function(n){if(n.emit)freq[n.emit]=(freq[n.emit]||0)+1});
+  var meu="",mx=0;Object.keys(freq).forEach(function(c){if(freq[c]>mx){mx=freq[c];meu=c}});
+  var itens=[],forn={},saidas=0,entradas=0,devol=0,nS=0,nE=0,nD=0,mod={"55":0,"65":0};
+  vivas.forEach(function(n){
+    mod[n.mod]=(mod[n.mod]||0)+1;
+    var ehMinha=(n.emit===meu),ehPraMim=(n.dest===meu&&!ehMinha);
+    var tipo="",sinal=1;
+    if(ehMinha&&n.tpNF==="0"){tipo="S";sinal=-1}            /* devolucao de venda */
+    else if(ehMinha&&n.fin==="4"){tipo="E";sinal=-1}        /* devolucao de compra */
+    else if(ehMinha){tipo="S"}
+    else if(ehPraMim&&n.fin==="4"){tipo="S";sinal=-1}
+    else if(ehPraMim){tipo="E"}
+    else return;                                            /* nota de terceiros */
+    if(sinal<0){devol+=n.vNF;nD++}
+    if(tipo==="S"){saidas+=sinal*n.vNF;if(sinal>0)nS++}
+    else{
+      entradas+=sinal*n.vNF;if(sinal>0)nE++;
+      var reg=regimeDe(n.crt);
+      var f=forn[n.emit]||(forn[n.emit]={cnpj:n.emit,nome:n.emitNome,regime:reg,notas:0,valor:0});
+      f.notas++;f.valor+=sinal*n.vNF;
+      if(reg!=="indefinido")f.regime=reg}
+    n.itens.forEach(function(it){
+      if(!it.total)return;
+      itens.push({tipo:tipo,ncm:it.ncm,desc:it.desc,cfop:it.cfop,
+        total:sinal*it.total,devolucao:false})})});
+  var tot=0,reg=0;
+  Object.keys(forn).forEach(function(k){var f=forn[k];tot+=f.valor;if(f.regime==="normal")reg+=f.valor});
+  return {meu:meu,itens:itens,saidas:saidas,entradas:entradas,devolucoes:devol,
+    notas:vivas.length,canceladas:Object.keys(canc).length,nS:nS,nE:nE,nD:nD,mod:mod,
+    pct:tot>0?reg/tot:0,regular:reg,
+    forn:Object.keys(forn).map(function(k){return forn[k]}).sort(function(a,b){return b.valor-a.valor})}}
+
+function pintarFornecedores(x){
+  ST.xml=x;
+  $("boxForn").hidden=false;
+  $("fornResumo").textContent=x.forn.length+" fornecedores em "+x.nE+" notas de compra · "+
+    pct(x.pct)+" das compras no regime normal";
+  $("tblForn").querySelector("tbody").innerHTML=
+    '<tr class="group"><td>Fornecedor</td><td>Regime</td><td class="n">Notas</td><td class="n">Valor</td></tr>'+
+    x.forn.slice(0,80).map(function(f){
+      var cor=f.regime==="normal"?"down":"up";
+      return '<tr><td>'+esc(f.nome||f.cnpj)+'</td><td><span class="pill '+cor+'">'+ROTREG[f.regime]+
+        '</span></td><td class="n">'+f.notas+'</td><td class="n">'+brlc(f.valor)+'</td></tr>'}).join("")}
+
+/* ===== estado ===== */
+var ST={itens:[],prod:[],empresa:"",periodo:"",extrato:null,ultimo:null,xml:null};
+
+/* ===== cálculo ===== */
+function faixaDe(rbt){for(var i=0;i<LIM.length;i++)if(rbt<=LIM[i])return i;return 5}
+function efetiva(rbt,anexo){
+  var f=faixaDe(rbt),t=TAB[anexo][f];
+  return {faixa:f,nom:t[0],pd:t[1],aliq:rbt>0?(rbt*t[0]-t[1])/rbt:t[0]}}
+
+function calcular(p){
+  var ef=efetiva(p.rbt,p.anexo),part=PART[p.anexo][ef.faixa];
+  var das=p.fat*ef.aliq;
+  var pisCof=p.usaExtrato&&(p.pisExt+p.cofExt)>0 ? (p.pisExt+p.cofExt) : das*(part[2]+part[3])/100;
+  var dasHib=das-pisCof;
+  var cbsDeb=p.fat*p.cbs*(1-p.redSai);
+  var cbsCred=p.compras*p.cbs*(1-p.redEnt)*p.regular;
+  /* Credito que sobra nao vira dinheiro de volta: acumula para o mes seguinte. */
+  var cbsLiq=cbsDeb-cbsCred,saldoCredor=0;
+  if(cbsLiq<0){saldoCredor=-cbsLiq;cbsLiq=0}
+  var ibs=p.incIbs?p.fat*p.ibs:0;
+  var hib=dasHib+cbsLiq+ibs;
+  var comp=[];for(var i=0;i<7;i++)comp.push(das*part[i]/100);
+  return {ef:ef,part:part,das:das,pisCof:pisCof,dasHib:dasHib,cbsDeb:cbsDeb,cbsCred:cbsCred,
+    cbsLiq:cbsLiq,saldoCredor:saldoCredor,ibs:ibs,
+    hib:hib,dif:hib-das,pAtual:p.fat?das/p.fat:0,pHib:p.fat?hib/p.fat:0,comp:comp,p:p}}
+
+/* ===== desenho ===== */
+function barras(trackId,legId,segs){
+  var tot=segs.reduce(function(a,s){return a+Math.max(0,s.v)},0)||1;
+  $(trackId).innerHTML=segs.filter(function(s){return s.v>0}).map(function(s){
+    return '<div class="seg" style="width:'+(100*s.v/tot).toFixed(2)+'%;background:'+s.c+'" title="'+esc(s.n)+' '+brl(s.v)+'"></div>'}).join("");
+  if(legId)$(legId).innerHTML=segs.filter(function(s){return s.v>0}).map(function(s){
+    return '<span><i class="swatch" style="background:'+s.c+'"></i>'+esc(s.n)+'</span>'}).join("");
+}
+
+function pintar(r,ids){
+  var sinal=r.dif>0?"up":"down";
+  $(ids.mes).textContent=(r.dif>0?"+":"−")+brl(Math.abs(r.dif)).replace("−","");
+  $(ids.mes).className="big "+sinal;
+  $(ids.mesSub).textContent=r.dif>0?"a mais por mês no cenário híbrido":"a menos por mês no cenário híbrido";
+  $(ids.ano).textContent=(r.dif>0?"+":"−")+brl(Math.abs(r.dif*12)).replace("−","");
+  $(ids.ano).className="big "+sinal;$(ids.ano).style.fontSize="25px";
+  var pp=(r.pHib-r.pAtual)*100;
+  $(ids.pp).textContent=(pp>0?"+":"")+pp.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})+" p.p.";
+  $(ids.pp).className="big "+sinal;$(ids.pp).style.fontSize="25px";
+  $(ids.cAtual).textContent=brl(r.das);$(ids.pAtual).textContent=pct(r.pAtual)+" da receita";
+  $(ids.cHib).textContent=brl(r.hib);$(ids.pHib).textContent=pct(r.pHib)+" da receita";
+  $(ids.lbAtual).textContent=brl(r.das)+" · "+pct(r.pAtual);
+  $(ids.lbHib).textContent=brl(r.hib)+" · "+pct(r.pHib);
+  var sA=[];for(var i=0;i<7;i++)if(r.comp[i]>0)sA.push({n:ROT[i],v:r.comp[i],c:COR[i]});
+  barras(ids.trAtual,ids.leg,sA);
+  var sH=[{n:"DAS sem PIS/COFINS",v:r.dasHib,c:"var(--brand)"},
+          {n:"CBS líquida (débito − crédito)",v:r.cbsLiq,c:"var(--s2)"}];
+  if(r.ibs>0)sH.push({n:"IBS teste",v:r.ibs,c:"var(--s4)"});
+  barras(ids.trHib,null,sH);
+  if(ids.rec){
+    if(!r.p.compras){
+      $(ids.rec).textContent="Faltam as entradas do mês";
+      $(ids.recSub).textContent="sem as compras não dá para concluir — o crédito é o que decide";
+    }else{
+      $(ids.rec).textContent=r.dif>0?"Permanecer no DAS integral":"Avaliar a opção pelo híbrido";
+      $(ids.recSub).textContent=r.dif>0
+        ? "o crédito das compras não cobre a CBS das vendas"
+        : "o crédito das compras supera o que sai do DAS";
+    }
+  }
+  if(ids.memo){
+    var L=[["Faturamento do mês",brl(r.p.fat)],
+      ["RBT12 usada na efetiva",brl(r.p.rbt)],
+      ["Faixa / alíquota nominal",(r.ef.faixa+1)+"ª · "+pct(r.ef.nom)],
+      ["Parcela a deduzir",brl(r.ef.pd)],
+      ["Alíquota efetiva",pct(r.ef.aliq,4)],
+      ["DAS hoje",brl(r.das)],
+      ["PIS + COFINS dentro do DAS",brl(r.pisCof)+"  ("+pct(r.p.fat?r.pisCof/r.p.fat:0)+" da receita)"],
+      ["DAS híbrido (sem PIS/COFINS)",brl(r.dasHib)],
+      ["Redução média das saídas",pct(r.p.redSai)],
+      ["CBS débito — saídas × "+pct(r.p.cbs)+" × (1 − redução)",brl(r.cbsDeb)],
+      ["Compras do mês",brl(r.p.compras)],
+      ["Compras de fornecedor no regime regular",pct(r.p.regular)],
+      ["Redução média das compras",pct(r.p.redEnt)],
+      ["CBS crédito",brl(r.cbsCred)],
+      ["CBS a recolher no mês",brl(r.cbsLiq)]];
+    if(r.saldoCredor>0)L.push(["Crédito acumulado para o mês seguinte",brl(r.saldoCredor)]);
+    if(r.ibs>0)L.push(["IBS de teste",brl(r.ibs)]);
+    L.push(["Total 2027 — híbrido",brl(r.hib)]);
+    $(ids.memo).querySelector("tbody").innerHTML=L.map(function(x,i){
+      return '<tr'+(i===L.length-1?' class="total"':'')+'><td>'+esc(x[0])+'</td><td class="n">'+esc(x[1])+'</td></tr>'}).join("");
+  }
+  if(ids.tagAnexo)$(ids.tagAnexo).textContent="Anexo "+r.p.anexo+" · "+(r.ef.faixa+1)+"ª faixa";
+  if(ids.tagFaixa)$(ids.tagFaixa).textContent="RBT12 até "+brlc(LIM[r.ef.faixa]);
+}
+
+function alerta(id,lista){
+  $(id).innerHTML=lista.map(function(a){
+    return '<div class="alert'+(a.err?" err":"")+'"><div><b>'+esc(a.t)+'</b>'+esc(a.d)+'</div></div>'}).join("")}
+
+/* ===== aba Empresa ===== */
+function paramsEmpresa(){
+  var conf=$("eDuvida").checked;
+  var redSai=num($("eRedSai").value)/100,redEnt=num($("eRedEnt").value)/100;
+  if(ST.prod.length){var m=medias();redSai=m.redSai;redEnt=m.redEnt}
+  return {fat:num($("eFat").value),rbt:num($("eRbt").value),compras:num($("eCompras").value),
+    regular:num($("eReg").value)/100,anexo:$("eAnexo").value,cbs:num($("eCbs").value)/100,
+    ibs:num($("eIbs").value)/100,incIbs:$("eIncIbs").checked,
+    usaExtrato:$("eUsaExtrato").checked,pisExt:num($("ePis").value),cofExt:num($("eCof").value),
+    redSai:redSai,redEnt:redEnt}}
+
+function medias(conf,anv){
+  if(conf===undefined)conf=$("eDuvida").checked;
+  if(anv===undefined)anv=$("eAnvisa").checked;
+  var sT=0,sR=0,eT=0,eR=0,expo=0;
+  ST.prod.forEach(function(p){
+    var r=redDe(p,conf,anv);
+    sT+=p.saidas;sR+=p.saidas*r;eT+=p.entradas;eR+=p.entradas*r;
+    if(p.exigeAnvisa&&p.red&&!(p.conferir&&!conf))expo+=p.saidas});
+  return {redSai:sT?sR/sT:0,redEnt:eT?eR/eT:0,saidas:sT,entradas:eT,expostoAnvisa:expo}}
+
+function rodarEmpresa(){
+  var p=paramsEmpresa(),r=calcular(p);ST.ultimo=r;
+  pintar(r,{mes:"vMes",mesSub:"vMesSub",ano:"vAno",pp:"vPP",cAtual:"cAtual",pAtual:"pAtual",
+    cHib:"cHib",pHib:"pHib",lbAtual:"lbAtual",lbHib:"lbHib",trAtual:"trAtual",trHib:"trHib",
+    leg:"leg",rec:"vRec",recSub:"vRecSub",memo:"memo",tagAnexo:"tagAnexo",tagFaixa:"tagFaixa"});
+  pintarLeitura(r);
+  var av=[];
+  if(!p.compras)av.push({t:"Nenhuma compra no período. ",d:"Sem entrada não há crédito, e o híbrido aparece no pior cenário possível. Confirme se o relatório do Domínio saiu com entradas e saídas."});
+  if(r.saldoCredor>0)av.push({t:"O crédito das compras supera a CBS das vendas. ",
+    d:brl(r.saldoCredor)+" ficam como crédito acumulado para o mês seguinte — não voltam como dinheiro. Num mês de compra pesada isso é normal; confira em mais de um período antes de concluir."});
+  if(ST.xml){
+    var simples=ST.xml.entradas-ST.xml.regular;
+    av.push({t:"Percentual de crédito medido nas notas. ",d:pct(ST.xml.pct)+" das compras vêm de fornecedor no regime normal, lido da tag CRT de "+ST.xml.nE+" notas de compra. "+
+      (simples>0?brl(simples)+" vêm de fornecedor do Simples e não geram crédito de CBS.":"Nenhum fornecedor do Simples no período.")});
+    var ind=ST.xml.forn.filter(function(f){return f.regime==="indefinido"}).length;
+    if(ind)av.push({t:ind+" fornecedor(es) sem CRT na nota. ",d:"Entraram como sem crédito, que é o lado conservador. Confira na lista de fornecedores."});
+  }else if(p.compras&&p.regular>=0.999)av.push({t:"Crédito integral assumido. ",d:"Todo fornecedor foi considerado no regime regular. Suba os XMLs de entrada para medir esse percentual em vez de estimá-lo."});
+  var conf=ST.prod.filter(function(x){return x.conferir&&!x.indefinido}).length;
+  var inde=ST.prod.filter(function(x){return x.indefinido}).length;
+  if(conf)av.push({t:conf+" produto(s) a conferir. ",d:"A NCM consta de um anexo da LC 214, mas a descrição do item não corresponde ao produto. Pelo teste duplo isso não sustenta o enquadramento — estão entrando sem redução."});
+  if(inde)av.push({t:inde+" produto(s) com a NCM em vários itens do mesmo anexo. ",d:"Nenhum item tem palavra em comum com a descrição, então apontar um seria chute. Entram sem redução até alguém identificar o item."});
+  if(ST.prod.length){var mm=medias();
+    if(mm.expostoAnvisa>0)av.push({t:brl(mm.expostoAnvisa)+" de saídas dependem de regularização na Anvisa. ",
+      d:$("eAnvisa").checked?"A redução desses produtos está sendo considerada. Sem o registro na Anvisa ela não se aplica (art. 131, §1º) — confirme no Motor de Evidências antes de fechar o estudo."
+        :"A redução desses produtos está sendo desprezada. Se estiverem regularizados, o híbrido fica melhor do que o mostrado."});}
+  if(ST.prod.length){var m=medias();
+    if(p.fat&&Math.abs(m.saidas-p.fat)/p.fat>0.01){
+      var ests=ST.extrato&&ST.extrato.estabelecimentos>1?ST.extrato.estabelecimentos:0;
+      av.push({t:"Saídas dos arquivos diferentes do faturamento informado. ",
+        d:"Os arquivos somam "+brl(m.saidas)+" e o campo traz "+brl(p.fat)+". "+
+          (ests?("O extrato tem "+ests+" estabelecimentos e o DAS é um só — se você subiu os XMLs de uma loja apenas, informe no campo o faturamento da empresa inteira. ")
+               :"")+
+          "O cálculo usa o campo; os arquivos definem a redução média por produto."})}}
+  alerta("alerts",av);
+}
+
+
+/* ===== Leitura do mês: os fatos e a interpretação =====
+   O que a pessoa levaria para a reunião: de onde vieram os números e por que o
+   resultado deu o que deu. Tudo derivado do que foi lido - nada fixo. */
+function pintarLeitura(r){
+  var p=r.p,x=ST.xml,m=ST.prod.length?medias():null,L=[];
+
+  if(x)L.push(["Notas lidas",x.notas.toLocaleString("pt-BR"),
+    (x.mod["65"]||0)+" NFC-e · "+(x.mod["55"]||0)+" NF-e"+
+    (x.canceladas?" · "+x.canceladas+" canceladas fora":"")+
+    (x.nD?" · "+x.nD+" devoluções abatidas":"")]);
+
+  L.push(["Faturamento do mês",brl(p.fat),
+    ST.extrato&&ST.extrato.rpa?("receita bruta do PA "+(ST.extrato.pa||"")+
+      (ST.extrato.estabelecimentos>1?" · "+ST.extrato.estabelecimentos+" estabelecimentos":"")):"informado à mão"]);
+
+  L.push(["Compras",brl(p.compras),
+    (p.fat?pct(p.compras/p.fat)+" do faturamento":"")+
+    (x&&x.forn.length?" · "+x.forn.length+" fornecedor"+(x.forn.length>1?"es":""):"")]);
+
+  if(x&&x.forn.length){
+    var normais=x.forn.filter(function(f){return f.regime==="normal"});
+    var vis={},nomes=[];
+    normais.forEach(function(f){var n=String(f.nome||"").split(/[ ,.]/)[0];
+      if(n&&!vis[n]&&nomes.length<4){vis[n]=1;nomes.push(n)}});
+    L.push(["Fornecedores no regime normal",pct(p.regular),
+      normais.length===x.forn.length?("todos — "+nomes.join(", ")+(normais.length>nomes.length?" e outros":"")):
+        (normais.length+" de "+x.forn.length+" — "+nomes.join(", "))]);
+  }else if(p.compras)
+    L.push(["Fornecedores no regime normal",pct(p.regular),"percentual informado, não medido"]);
+
+  if(m){
+    var ncms={};ST.prod.forEach(function(q){if(q.ncm)ncms[q.ncm]=1});
+    var comRed=ST.prod.filter(function(q){return redDe(q,$("eDuvida").checked,$("eAnvisa").checked)>0}).length;
+    L.push(["Produtos",ST.prod.length.toLocaleString("pt-BR"),
+      Object.keys(ncms).length+" NCMs · "+(comRed?comRed+" com redução":"nenhuma com redução nos anexos")]);
+  }
+
+  L.push(["Hoje — DAS integral",brl(r.das),pct(r.pAtual)+" da receita · Anexo "+p.anexo+", "+(r.ef.faixa+1)+"ª faixa"]);
+  L.push(["2027 — DAS híbrido + CBS",brl(r.hib),
+    pct(r.pHib)+" da receita · "+(r.dif>0?"+":"−")+brl(Math.abs(r.dif)).replace("−","")+" por mês, "+
+    ((r.pHib-r.pAtual)*100>0?"+":"")+((r.pHib-r.pAtual)*100).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})+" p.p."]);
+
+  $("tblLeitura").querySelector("tbody").innerHTML=L.map(function(l,i){
+    return '<tr'+(i===L.length-1?' class="total"':'')+'><td>'+esc(l[0])+'</td><td>'+esc(l[1])+
+      (l[2]?'<small>'+esc(l[2])+'</small>':'')+'</td></tr>'}).join("");
+  $("tagLeitura").textContent=ST.periodo||(ST.extrato&&ST.extrato.pa?"PA "+ST.extrato.pa:"");
+
+  /* ---------- interpretação ---------- */
+  var T=[];
+
+  /* 1. o que acontece com as vendas */
+  if(!p.redSai)
+    T.push("<b>Nas vendas a CBS incide cheia.</b> Nenhum dos produtos do mês tem redução nos anexos da LC 214/2025, "+
+      "então a CBS de "+pct(p.cbs)+" cai sobre todo o faturamento: "+brl(r.cbsDeb)+" de débito.");
+  else
+    T.push("<b>Parte das vendas tem redução.</b> A redução média das saídas é de "+pct(p.redSai)+
+      ", o que derruba a CBS das vendas de "+brl(p.fat*p.cbs)+" para "+brl(r.cbsDeb)+".");
+
+  /* 2. o que o crédito faz */
+  if(!p.compras)
+    T.push("<b>Não há compras no período</b>, então não há crédito nenhum a abater. Enquanto o mês não tiver entradas, "+
+      "o cenário híbrido aparece no pior caso possível e não serve para decidir.");
+  else{
+    var razao=p.fat?p.compras/p.fat:0;
+    T.push("<b>O crédito das compras é o que segura a conta.</b> As compras são "+pct(razao)+" do faturamento e "+
+      (p.regular>=0.999?"vêm inteiramente de fornecedor no regime normal — o melhor cenário possível de crédito"
+        :pct(p.regular)+" vêm de fornecedor no regime normal")+
+      ", o que dá "+brl(r.cbsCred)+" de crédito contra "+brl(r.cbsDeb)+" de débito.");
+  }
+
+  /* 3. conclusão e ponto de virada */
+  if(r.saldoCredor>0)
+    T.push("<b>O crédito supera o débito neste mês</b> e sobram "+brl(r.saldoCredor)+
+      " para o mês seguinte. Isso costuma ser efeito de um mês de compra concentrada — confira outros períodos antes de concluir.");
+  else if(r.dif>0){
+    var falta=(r.cbsDeb+r.dasHib+r.ibs-r.das-r.cbsCred);
+    var den=p.cbs*(1-p.redEnt)*p.regular;
+    var comprasBE=den>0?(r.cbsCred+falta)/den:0;
+    T.push("<b>Mesmo assim o híbrido custa mais: "+brl(r.dif)+" por mês, "+brl(r.dif*12)+" no ano.</b> "+
+      (comprasBE>0&&comprasBE<=p.fat*3
+        ? ("Para empatar com o DAS de hoje, as compras do mês precisariam chegar a "+brl(comprasBE)+" — "+
+           pct(p.fat?comprasBE/p.fat:0)+" do faturamento, contra "+pct(p.fat?p.compras/p.fat:0)+" de agora.")
+        : "Para empatar seria preciso comprar mais do que a empresa fatura, o que não se sustenta."));
+  }else
+    T.push("<b>O híbrido sai mais barato: "+brl(-r.dif)+" por mês, "+brl(-r.dif*12)+" no ano.</b> "+
+      "Vale levar a opção para o cliente, conferindo antes se o padrão se repete nos outros meses.");
+
+  /* 4. concentração de fornecedor */
+  if(x&&x.forn.length&&p.compras){
+    var f0=x.forn[0],part=f0.valor/x.entradas;
+    if(part>=0.35)
+      T.push("<b>"+esc(String(f0.nome||f0.cnpj).split(" - ")[0])+" concentra "+pct(part)+" das compras.</b> "+
+        "O crédito do mês depende dela continuar no regime normal — se mudar, a conta muda junto.");
+  }
+
+  /* 5. ressalvas */
+  var R=[];
+  if(ST.prod.length){
+    var conf=ST.prod.filter(function(q){return q.conferir&&!q.indefinido}).length;
+    var inde=ST.prod.filter(function(q){return q.indefinido&&q.red}).length;
+    if(conf)R.push(conf+" produto(s) cujo texto do anexo não corresponde ao produto, calculados sem redução");
+    if(inde)R.push(inde+" produto(s) com a NCM em vários itens, sem item identificado — também sem redução");
+    var mm=medias();
+    if(mm.expostoAnvisa>0)R.push(brl(mm.expostoAnvisa)+" de saídas dependem de regularização na Anvisa");
+  }
+  if(!x&&p.compras)R.push("o percentual de fornecedores no regime normal foi informado, não medido nas notas");
+  if(ST.extrato&&ST.extrato.estabelecimentos>1)R.push("a empresa tem "+ST.extrato.estabelecimentos+
+    " estabelecimentos e o DAS é um só — confirme se os arquivos cobrem todos");
+  R.push("um mês não decide: a opção vale para o semestre inteiro");
+
+  $("interpretacao").innerHTML=T.map(function(t){return "<p>"+t+"</p>"}).join("")+
+    '<p class="ress"><b>Antes de concluir:</b> '+R.join("; ")+".</p>";
+}
+
+/* ===== aba Produtos ===== */
+function montarProdutos(){
+  var mapa={};
+  ST.itens.forEach(function(it){
+    if(it.devolucao)return;
+    var k=it.ncm+"|"+norm(it.desc),p=mapa[k];
+    if(!p){
+      var lc=enquadrar(it.ncm,it.desc);
+      p=mapa[k]={ncm:it.ncm,desc:it.desc,saidas:0,entradas:0,linhas:0,
+        red:lc?lc.red:0,anexo:lc?lc.anexo:"",item:"",literal:"",hipotese:"",
+        exigeAnvisa:!!(lc&&lc.exigeAnvisa),
+        score:lc?lc.score:0,forca:lc?forcaTxt(lc.score):"",
+        indefinido:!!(lc&&lc.indefinido),alternativas:lc?lc.alternativas:[],
+        quantos:lc?lc.quantos:0,art133:!!(lc&&lc.art133),
+        itemPossivel:"",hipotesePossivel:"",literalPossivel:""};
+      /* Mesma trava do Motor de Evidencias: a NCM constar do anexo nao basta. Se a
+         descricao nao corresponde ao item, o enquadramento nao se sustenta - e a
+         ferramenta nao pode exibir o item nem a hipotese do candidato que venceu por
+         desempate, senao parece definido o que foi palpite. */
+      p.sustentado=!!(lc&&!lc.indefinido&&lc.score>=0.25);
+      p.conferir=!!(p.red>0&&!p.sustentado);
+      if(lc&&p.sustentado){p.item=lc.item;p.literal=lc.literal;p.hipotese=lc.hipotese}
+      else if(lc){p.itemPossivel=lc.item;p.hipotesePossivel=lc.hipotese;p.literalPossivel=lc.literal;
+        p.literal=lc.indefinido
+          ? ("A NCM consta em "+lc.quantos+" itens"+(lc.alternativas.length?" de anexos diferentes":" deste anexo")+
+             " e nenhum tem palavra em comum com a descrição do produto.")
+          : ('O item '+lc.item+' descreve "'+String(lc.literal).slice(0,110)+'", que não corresponde a este produto.')}
+      p.situacao=!p.anexo?"integral":(p.indefinido?"vários itens":(p.conferir?"não sustentado":
+        (p.exigeAnvisa?"depende da Anvisa":"com redução")));
+    }
+    p.linhas++;if(it.tipo==="S")p.saidas+=it.total;else p.entradas+=it.total});
+  ST.prod=Object.keys(mapa).map(function(k){return mapa[k]})
+    .sort(function(a,b){return (b.saidas+b.entradas)-(a.saidas+a.entradas)});
+  desenharProdutos()}
+
+/* Regra de aplicacao da reducao, nesta ordem:
+   1. sem anexo -> integral;
+   2. indefinido ou aderencia baixa -> so entra se a pessoa marcar "conferir";
+   3. depende da Anvisa -> so entra se a pessoa mantiver o parametro ligado. */
+function redDe(p,conf,anv){
+  if(!p.red)return 0;
+  if(p.conferir&&!conf)return 0;
+  if(p.exigeAnvisa&&!anv)return 0;
+  return p.red}
+
+function desenharProdutos(){
+  var busca=norm($("fBusca").value),ft=$("fTipo").value,fr=$("fRed").value;
+  var conf=$("eDuvida").checked,anv=$("eAnvisa").checked;
+  var rows=ST.prod.filter(function(p){
+    if(busca&&norm(p.desc+" "+p.ncm).indexOf(busca)<0)return false;
+    if(ft==="S"&&!p.saidas)return false;
+    if(ft==="E"&&!p.entradas)return false;
+    if(fr==="com"&&!redDe(p,conf,anv))return false;
+    if(fr==="sem"&&p.red>0)return false;
+    if(fr==="conf"&&!(p.conferir&&!p.indefinido))return false;
+    if(fr==="inde"&&!p.indefinido)return false;
+    if(fr==="anv"&&!(p.exigeAnvisa&&p.red))return false;
+    return true});
+  $("prodVazio").hidden=!!ST.prod.length;
+  var m=medias(conf,anv);
+  $("kpis").innerHTML=[
+    ["Produtos",ST.prod.length.toLocaleString("pt-BR")],
+    ["Saídas",brl(m.saidas)],
+    ["Entradas",brl(m.entradas)],
+    ["Redução média das saídas",pct(m.redSai)],
+    ["Redução média das compras",pct(m.redEnt)],
+    ["Depende da Anvisa",brl(m.expostoAnvisa)],
+    ["Enquadramento a conferir",ST.prod.filter(function(p){return p.conferir}).length.toLocaleString("pt-BR")]
+  ].map(function(k){return '<div class="kpi"><span class="eyebrow">'+esc(k[0])+'</span><div class="v">'+esc(k[1])+'</div></div>'}).join("");
+  $("tblProd").querySelector("thead").innerHTML=
+    '<tr><th>Produto</th><th>NCM</th><th class="n">Saídas</th><th class="n">Entradas</th>'+
+    '<th>Enquadramento na LC 214</th><th class="n">Aderência</th><th class="n">Redução aplicada</th></tr>';
+  $("tblProd").querySelector("tbody").innerHTML=rows.slice(0,600).map(function(p){
+    var r=redDe(p,conf,anv);
+    var tag=p.indefinido?'<span class="pill up">vários itens</span>'
+      :(p.conferir?'<span class="pill up">conferir</span>'
+      :(r>0?'<span class="pill down">'+(r>=1?"alíquota zero":"redução "+pct(r,0))+'</span>'
+      :(p.red>0?'<span class="pill up">não aplicada</span>':'<span class="pill">integral</span>')));
+    var base;
+    if(p.art133)base='Art. 133 — medicamento registrado na Anvisa<br><span style="color:var(--ink-3);font-size:12px">independe de anexo</span>';
+    else if(!p.anexo)base='<span style="color:var(--ink-3)">NCM fora dos anexos — tributação integral</span>';
+    else base="Anexo "+esc(p.anexo)+(p.item?", item "+esc(p.item):"")+
+      (p.exigeAnvisa?' <span class="pill up" style="font-size:11px">depende da Anvisa</span>':"")+
+      '<br><span style="color:var(--ink-3);font-size:12px">'+esc(p.literal)+
+      (p.itemPossivel?" · possível, não confirmado: item "+esc(p.itemPossivel):"")+
+      (p.alternativas.length?" · também possível: "+esc(p.alternativas.slice(0,3).join(" | ")):"")+'</span>';
+    var ad=p.anexo&&!p.art133?esc(p.forca)+' <span style="color:var(--ink-3)">('+p.score.toFixed(2)+')</span>':"—";
+    return '<tr><td>'+esc(p.desc)+'</td><td class="n">'+esc(p.ncm)+'</td><td class="n">'+brlc(p.saidas)+
+      '</td><td class="n">'+brlc(p.entradas)+'</td><td>'+base+'</td><td class="n">'+ad+
+      '</td><td class="n">'+tag+'</td></tr>'}).join("")}
+
+/* ===== aba Manual ===== */
+function rodarManual(){
+  var grau=num($("mGrau").value)||0.6;
+  var p={fat:num($("mFat").value),rbt:num($("mRbt").value),compras:num($("mCompras").value),
+    regular:num($("mReg").value)/100,anexo:$("mAnexo").value,cbs:num($("mCbs").value)/100,
+    ibs:num($("mIbs").value)/100,incIbs:$("mIncIbs").checked,usaExtrato:false,pisExt:0,cofExt:0,
+    redSai:(num($("mRedSai").value)/100)*grau,redEnt:(num($("mRedEnt").value)/100)*grau};
+  var r=calcular(p);
+  pintar(r,{mes:"mMes",mesSub:"mMesSub",ano:"mAno",pp:"mPP",cAtual:"mcAtual",pAtual:"mpAtual",
+    cHib:"mcHib",pHib:"mpHib",lbAtual:"mlbAtual",lbHib:"mlbHib",trAtual:"mtrAtual",trHib:"mtrHib",
+    leg:"mleg",memo:"mMemo",tagAnexo:"mTagAnexo",tagFaixa:"mTagFaixa"});
+  var av=[];
+  if(!p.compras)av.push({t:"Sem compras informadas. ",d:"No comércio o crédito das entradas costuma ser o que decide a conta."});
+  alerta("mAlerts",av);
+}
+
+/* ===== ligações ===== */
+function statusFonte(cls,txt){$("srcDot").className="dot "+cls;$("srcTxt").textContent=txt}
+
+$("fMov").addEventListener("change",async function(e){
+  var f=e.target.files[0];if(!f)return;
+  statusFonte("load","lendo "+f.name+"…");
+  try{
+    var txt=await lerArquivoTexto(f),d=lerMovimentacao(txt);
+    ST.itens=d.itens;ST.empresa=d.empresa||ST.empresa;ST.periodo=d.periodo||ST.periodo;
+    montarProdutos();
+    var m=medias();
+    $("eFat").value=brlc(m.saidas);$("eCompras").value=brlc(m.entradas);
+    $("picked").innerHTML="<strong>"+esc(ST.empresa||"Empresa")+"</strong><br>"+
+      esc(ST.periodo||"")+" · "+d.itens.length+" linhas · "+ST.prod.length+" produtos";
+    statusFonte("on",ST.prod.length+" produtos lidos");
+    rodarEmpresa();
+  }catch(err){statusFonte("off","erro na movimentação");
+    alerta("alerts",[{err:true,t:"Não consegui ler a movimentação fiscal. ",d:String(err.message||err)}])}});
+
+$("fXml").addEventListener("change",async function(e){
+  var fs=e.target.files;if(!fs||!fs.length)return;
+  statusFonte("load","lendo os XMLs…");
+  try{
+    var x=await lerPacoteXml(fs);
+    pintarFornecedores(x);
+    ST.itens=x.itens;montarProdutos();
+    /* o extrato manda no faturamento: o DAS e da empresa inteira, e os XMLs
+       podem ser de um estabelecimento so. */
+    if(x.saidas>0&&!(ST.extrato&&ST.extrato.rpa))$("eFat").value=brlc(x.saidas);
+    if(x.entradas>0)$("eCompras").value=brlc(x.entradas);
+    if(x.entradas>0)$("eReg").value=(x.pct*100).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});
+    $("picked").innerHTML="<strong>"+esc(ST.extrato&&ST.extrato.empresa?ST.extrato.empresa:("CNPJ "+x.meu))+"</strong><br>"+
+      x.notas.toLocaleString("pt-BR")+" notas ("+(x.mod["65"]||0)+" NFC-e · "+(x.mod["55"]||0)+" NF-e)"+
+      (x.canceladas?" · "+x.canceladas+" canceladas fora":"")+
+      (x.nD?" · "+x.nD+" devoluções abatidas":"")+" · "+ST.prod.length+" produtos";
+    statusFonte("on",x.notas+" notas · "+pct(x.pct)+" das compras no regime normal");
+    rodarEmpresa();
+  }catch(err){statusFonte("off","erro nos XMLs");
+    alerta("alerts",[{err:true,t:"Não consegui ler os XMLs. ",d:String(err.message||err)}])}});
+
+$("fExt").addEventListener("change",async function(e){
+  var f=e.target.files[0];if(!f)return;
+  statusFonte("load","lendo o extrato…");
+  try{
+    var txt=await lerPdf(f),o=lerExtrato(txt);ST.extrato=o;
+    if(o.rpa)$("eFat").value=brlc(o.rpa);
+    if(o.rbt12p||o.rbt12)$("eRbt").value=brlc(o.rbt12p||o.rbt12);
+    if(o.pis)$("ePis").value=brlc(o.pis);
+    if(o.cofins)$("eCof").value=brlc(o.cofins);
+    if(o.anexo)$("eAnexo").value=o.anexo;
+    $("picked").innerHTML="<strong>"+esc(o.empresa||ST.empresa||"Empresa")+"</strong><br>"+
+      "PA "+esc(o.pa||"—")+" · DAS declarado "+brl(o.das||0)+
+      (ST.prod.length?" · "+ST.prod.length+" produtos lidos":"");
+    statusFonte("on","extrato de "+(o.pa||"—")+" lido");
+    rodarEmpresa();
+    if(o.das&&ST.ultimo&&Math.abs(o.das-ST.ultimo.das)>1)
+      alerta("alerts",[{t:"DAS calculado diferente do declarado. ",d:"O extrato traz "+brl(o.das)+" e o cálculo deu "+brl(ST.ultimo.das)+". Confira a RBT12 e o anexo."}]);
+  }catch(err){statusFonte("off","erro no extrato");
+    alerta("alerts",[{err:true,t:"Não consegui ler o extrato. ",d:"Digite os valores nos campos ao lado. Detalhe: "+String(err.message||err)}])}});
+
+["eFat","eRbt","eCompras","eReg","eAnexo","eCbs","eIbs","ePis","eCof","eRedSai","eRedEnt"].forEach(function(id){
+  $(id).addEventListener("input",rodarEmpresa)});
+["eIncIbs","eUsaExtrato","eDuvida","eAnvisa"].forEach(function(id){
+  $(id).addEventListener("change",function(){rodarEmpresa();if(ST.prod.length)desenharProdutos()})});
+["mFat","mRbt","mCompras","mReg","mRedSai","mRedEnt","mAnexo","mGrau","mCbs","mIbs"].forEach(function(id){
+  $(id).addEventListener("input",rodarManual)});
+$("mIncIbs").addEventListener("change",rodarManual);
+["fBusca","fTipo","fRed"].forEach(function(id){$(id).addEventListener("input",desenharProdutos)});
+
+$("btnCopy").addEventListener("click",function(){
+  var t=[].slice.call($("memo").querySelectorAll("tr")).map(function(tr){
+    return [].slice.call(tr.children).map(function(td){return td.textContent}).join("\t")}).join("\n");
+  navigator.clipboard.writeText(t).then(function(){var b=$("btnCopy");b.textContent="copiado";
+    setTimeout(function(){b.textContent="Copiar para Sheets"},1400)})});
+$("btnCopyProd").addEventListener("click",function(){
+  var t=["Produto\tNCM\tSaidas\tEntradas\tAnexo\tItem\tTexto do anexo\tAderencia\tReducao do anexo\tReducao aplicada\tSituacao\tBase legal"].concat(
+    ST.prod.map(function(p){return [p.desc,p.ncm,p.saidas.toFixed(2),p.entradas.toFixed(2),
+      p.anexo||"",p.item||"",String(p.literal||"").replace(/[\t\n;]/g," "),p.score.toFixed(2),
+      (p.red*100).toFixed(0)+"%",(redDe(p,$("eDuvida").checked,$("eAnvisa").checked)*100).toFixed(0)+"%",
+      p.situacao,String(p.hipotese||"").replace(/[\t\n;]/g," ")].join("\t")})).join("\n");
+  navigator.clipboard.writeText(t).then(function(){var b=$("btnCopyProd");b.textContent="copiado";
+    setTimeout(function(){b.textContent="Copiar tabela"},1400)})});
+
+var PANES=["empresa","produtos","manual"];
+PANES.forEach(function(k){$("tab-"+k).addEventListener("click",function(){
+  PANES.forEach(function(j){$("tab-"+j).setAttribute("aria-selected",String(j===k));$("pane-"+j).hidden=(j!==k)});
+  if(k==="manual")rodarManual();if(k==="produtos")desenharProdutos()})});
+
+if(window.pdfjsLib)pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+statusFonte("","Nenhum arquivo carregado");
+rodarEmpresa();rodarManual();
+
+
+/* ===================== ligação com a planilha e a IA =====================
+   O cálculo continua inteiro no navegador. A planilha entra para guardar as
+   empresas, os parâmetros e o histórico das consultas; a IA entra só para
+   escrever a leitura, nunca para produzir número. */
+var GS={empresas:[],chaveIA:false,modelo:"",ultimoFato:null};
+
+function comGS(nome,args,ok,falha){
+  try{
+    google.script.run.withSuccessHandler(ok||function(){})
+      .withFailureHandler(falha||function(e){console.log(nome,String(e))})[nome].apply(null,args||[]);
+  }catch(e){if(falha)falha(e)}
+}
+
+function carregarEmpresas(){
+  comGS("lerEmpresas",[],function(r){
+    if(!r||!r.ok)return;
+    GS.empresas=r.empresas||[];
+    var sel=$("eEmpresa");
+    sel.innerHTML='<option value="">— sem cadastro —</option>'+GS.empresas.map(function(e,i){
+      return '<option value="'+i+'">'+esc((e.codigo?e.codigo+" · ":"")+(e.nome||e.cnpj))+'</option>'}).join("");
+    sel.parentNode.hidden=!GS.empresas.length;
+    if(!GS.empresas.length)$("avisoCadastro").hidden=false;
+  })}
+
+function carregarParametros(){
+  comGS("lerParametros",[],function(r){
+    if(!r||!r.ok||!r.params)return;
+    var p=r.params;
+    if(isFinite(p.cbs)&&p.cbs>0)$("eCbs").value=String(p.cbs).replace(".",",");
+    if(isFinite(p.ibs)&&p.ibs>0)$("eIbs").value=String(p.ibs).replace(".",",");
+    if(p.incIbs!==undefined)$("eIncIbs").checked=!!p.incIbs;
+    if(p.anvisa!==undefined)$("eAnvisa").checked=!!p.anvisa;
+    if(p.conferir!==undefined)$("eDuvida").checked=!!p.conferir;
+    rodarEmpresa();
+  })}
+
+$("eEmpresa").addEventListener("change",function(){
+  var e=GS.empresas[this.value];if(!e)return;
+  if(e.anexo&&(e.anexo==="I"||e.anexo==="II"))$("eAnexo").value=e.anexo;
+  ST.empresaSel=e;
+  $("picked").innerHTML="<strong>"+esc(e.nome||e.cnpj)+"</strong><br>"+
+    (e.cnpj?"CNPJ "+esc(e.cnpj):"")+(e.responsavel?" · "+esc(e.responsavel):"")+
+    "<br>Agora carregue os arquivos do mês.";
+  rodarEmpresa()});
+
+/* ---- os fatos que a IA recebe: valores já calculados, nada para ela somar ---- */
+function montarFatos(){
+  var r=ST.ultimo;if(!r)return null;
+  var p=r.p,x=ST.xml,m=ST.prod.length?medias():null;
+  var f={
+    empresa:nomeEmpresa(),periodo:periodoAtual(),anexo:p.anexo,faixa:(r.ef.faixa+1)+"ª",
+    faturamento:{valor:p.fat,formatado:brl(p.fat)},
+    compras:{valor:p.compras,formatado:brl(p.compras),
+             percentual_do_faturamento:p.fat?pct(p.compras/p.fat):"—"},
+    fornecedores_no_regime_normal:pct(p.regular),
+    origem_do_percentual:x?"medido na tag CRT das notas":"informado pelo usuário",
+    reducao_media_das_saidas:pct(p.redSai),
+    reducao_media_das_compras:pct(p.redEnt),
+    aliquota_cbs:pct(p.cbs),
+    das_hoje:{valor:r.das,formatado:brl(r.das),percentual_da_receita:pct(r.pAtual)},
+    pis_cofins_no_das:brl(r.pisCof),
+    das_hibrido_sem_pis_cofins:brl(r.dasHib),
+    cbs_debito:brl(r.cbsDeb),cbs_credito:brl(r.cbsCred),cbs_a_recolher:brl(r.cbsLiq),
+    credito_acumulado:r.saldoCredor>0?brl(r.saldoCredor):null,
+    total_2027:{valor:r.hib,formatado:brl(r.hib),percentual_da_receita:pct(r.pHib)},
+    diferenca_no_mes:brl(r.dif),diferenca_no_ano:brl(r.dif*12),
+    variacao_pontos_percentuais:((r.pHib-r.pAtual)*100).toFixed(2).replace(".",","),
+    hibrido_custa_mais:r.dif>0,
+    base_legal:"LC 214/2025: opção pelo regime regular no art. 41, §3º; IBS de 2027 em 0,1% pelo art. 344; CBS de 2027 pela alíquota de referência menos 0,1 p.p. pelo art. 347"
+  };
+  if(x)f.notas={total:x.notas,nfce:x.mod["65"]||0,nfe:x.mod["55"]||0,
+    canceladas:x.canceladas,devolucoes_abatidas:x.nD,notas_de_compra:x.nE};
+  if(m)f.produtos={quantidade:ST.prod.length,
+    com_reducao:ST.prod.filter(function(q){return redDe(q,$("eDuvida").checked,$("eAnvisa").checked)>0}).length,
+    a_conferir:ST.prod.filter(function(q){return q.conferir}).length,
+    dependem_de_anvisa:m.expostoAnvisa>0?brl(m.expostoAnvisa):null};
+  if(x&&x.forn.length){
+    f.maiores_fornecedores=x.forn.slice(0,5).map(function(g){
+      return {nome:g.nome,regime:ROTREG[g.regime],valor:brl(g.valor),
+              participacao:x.entradas?pct(g.valor/x.entradas):"—"}})}
+  /* ponto de virada, já calculado aqui para a IA não tentar fazer a conta */
+  if(r.dif>0){
+    var den=p.cbs*(1-p.redEnt)*p.regular;
+    var be=den>0?(r.cbsDeb+r.dasHib+r.ibs-r.das)/den:0;
+    f.compras_para_empatar=(be>0&&be<=p.fat*3)
+      ?{formatado:brl(be),percentual_do_faturamento:p.fat?pct(be/p.fat):"—"}
+      :"seria preciso comprar mais do que a empresa fatura";
+  }
+  GS.ultimoFato=f;return f}
+
+function nomeEmpresa(){
+  if(ST.empresaSel&&ST.empresaSel.nome)return ST.empresaSel.nome;
+  if(ST.extrato&&ST.extrato.empresa)return ST.extrato.empresa;
+  return ST.empresa||""}
+function cnpjEmpresa(){
+  if(ST.empresaSel&&ST.empresaSel.cnpj)return ST.empresaSel.cnpj;
+  if(ST.extrato&&ST.extrato.cnpj)return ST.extrato.cnpj;
+  if(ST.xml&&ST.xml.meu)return ST.xml.meu;
+  return ""}
+function periodoAtual(){
+  if(ST.extrato&&ST.extrato.pa)return ST.extrato.pa;
+  return ST.periodo||""}
+
+/* ---- botão da IA ---- */
+$("btnIA").addEventListener("click",function(){
+  var f=montarFatos();
+  if(!f){log("carregue os arquivos primeiro");return}
+  var b=this;b.disabled=true;b.textContent="escrevendo…";
+  comGS("interpretarIA",[f,GS.modelo||null],function(r){
+    b.disabled=false;b.textContent="Interpretar com a IA";
+    if(!r||!r.ok){
+      $("iaAviso").hidden=false;
+      $("iaAviso").textContent="A IA não respondeu ("+((r&&r.erro)||"erro")+"). A leitura abaixo continua a das regras.";
+      return}
+    $("iaAviso").hidden=true;
+    ST.interpretIA={paragrafos:r.paragrafos||[],ressalvas:r.ressalvas||[],modelo:r.modeloUsado||GS.modelo};
+    $("interpretacao").innerHTML=
+      (ST.interpretIA.paragrafos.map(function(t){return "<p>"+esc(t)+"</p>"}).join(""))+
+      (ST.interpretIA.ressalvas.length
+        ?'<p class="ress"><b>Antes de concluir:</b> '+esc(ST.interpretIA.ressalvas.join("; "))+"."+'</p>':"")+
+      '<p class="hint" style="margin-top:10px">Texto escrito pela IA a partir dos números desta tela. '+
+      'Os valores são os calculados aqui — a IA não recalcula nada. Confira antes de enviar ao cliente.</p>';
+  },function(e){b.disabled=false;b.textContent="Interpretar com a IA";
+    $("iaAviso").hidden=false;$("iaAviso").textContent="Falha ao chamar a IA: "+String(e)});
+});
+
+/* ---- botão de gravar ---- */
+$("btnGravar").addEventListener("click",function(){
+  var r=ST.ultimo;if(!r){log("nada para gravar ainda");return}
+  var b=this;b.disabled=true;b.textContent="gravando…";
+  var p=r.p,x=ST.xml,conf=$("eDuvida").checked,anv=$("eAnvisa").checked;
+  var d={
+    empresa:nomeEmpresa(),cnpj:cnpjEmpresa(),periodo:periodoAtual(),
+    fat:p.fat,rbt:p.rbt,anexo:p.anexo,faixa:(r.ef.faixa+1),aliq:r.ef.aliq,
+    das:r.das,pisCof:r.pisCof,dasHib:r.dasHib,
+    compras:p.compras,regular:p.regular,redSai:p.redSai,redEnt:p.redEnt,
+    cbsDeb:r.cbsDeb,cbsCred:r.cbsCred,cbsLiq:r.cbsLiq,saldoCredor:r.saldoCredor,ibs:r.ibs,
+    hib:r.hib,dif:r.dif,difAno:r.dif*12,pp:(r.pHib-r.pAtual)*100,
+    recomendacao:$("vRec").textContent,
+    notas:x?x.notas:0,nfce:x?(x.mod["65"]||0):0,nfe:x?(x.mod["55"]||0):0,
+    canceladas:x?x.canceladas:0,devolucoes:x?x.nD:0,
+    qtdFornecedores:x?x.forn.length:0,qtdProdutos:ST.prod.length,
+    interpretacao:$("interpretacao").innerText.replace(/\n{2,}/g,"\n").trim(),
+    origemInterpretacao:ST.interpretIA?"IA":"regras",
+    modelo:ST.interpretIA?ST.interpretIA.modelo:"",
+    fornecedores:x?x.forn.map(function(f){
+      return {cnpj:f.cnpj,nome:f.nome,regime:ROTREG[f.regime],notas:f.notas,valor:f.valor}}):[],
+    produtos:ST.prod.map(function(q){
+      return {ncm:q.ncm,desc:q.desc,saidas:q.saidas,entradas:q.entradas,anexo:q.anexo,
+              item:q.item,score:q.score,red:q.red,redAplicada:redDe(q,conf,anv),
+              situacao:q.situacao,hipotese:q.hipotese}})
+  };
+  comGS("salvarSimulacao",[d],function(res){
+    b.disabled=false;b.textContent="Gravar na planilha";
+    if(!res||!res.ok){log("[ERRO] "+((res&&res.erro)||"falha ao gravar"));return}
+    $("gravou").hidden=false;
+    $("gravou").textContent="Gravado na aba SIMULACOES como "+res.id+
+      " — produtos e fornecedores foram para as abas de apoio, ligados por esse código.";
+  },function(e){b.disabled=false;b.textContent="Gravar na planilha";log("[ERRO] "+String(e))});
+});
+
+comGS("temChaveIA",[],function(r){
+  if(r&&r.ok){GS.chaveIA=!!r.tem;GS.modelo=r.modelo||"";
+    $("btnIA").disabled=!r.tem;
+    if(!r.tem){$("iaAviso").hidden=false;
+      $("iaAviso").textContent="A chave do Gemini ainda não foi preenchida no Codigo.gs. A leitura abaixo é a das regras."}}});
+carregarEmpresas();carregarParametros();
+
+</script>
+</body>
+</html>
