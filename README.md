@@ -1,6 +1,6 @@
-# Simulador Reforma Sn Comercio
+# Demonstração — Simulador da reforma 2027 para comércio no Simples
 
-> Projeto de portfólio de **Victória Pedrosa** (Automação, Processos e Dados). Automação desenvolvida para um escritório de contabilidade; **esta é uma versão com dados fictícios** — nomes, CNPJs, e-mails e IDs internos foram substituídos.
+> Projeto de portfólio de **Victória Pedrosa**. **Demonstração** de simulador da reforma 2027 para comércio no Simples — versão com dados fictícios (nomes, CNPJs, e-mails e IDs internos substituídos).
 
 ## Problema de negócio
 Clientes do comércio no Simples precisam decidir entre DAS integral e regime híbrido em 2027, e a conta é complexa.
